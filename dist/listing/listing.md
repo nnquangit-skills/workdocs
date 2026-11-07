@@ -1,6 +1,6 @@
 # workdocs - listing copy (English, free listing)
 
-Paste into the marketplace listing. Screenshots and the logo are next to this file; the demo video is `workdocs-demo.mp4` with `workdocs-demo.en.srt`.
+Paste into the marketplace listing. Screenshots and the logo are next to this file; the demo video is `workdocs-demo.mp4` with `workdocs-demo.en.srt`, published at https://youtu.be/EuZ_iwpUpuc.
 
 ## Title
 

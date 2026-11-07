@@ -1,4 +1,6 @@
-# YouTube upload - copy and paste (channel @hackathonchallenges)
+# YouTube video (channel @hackathonchallenges)
+
+Published 2026-11-07, public, English subtitles: https://youtu.be/EuZ_iwpUpuc
 
 File: `dist/listing/workdocs-demo.mp4` (1920x1080, 43 s). Subtitles: `dist/listing/workdocs-demo.en.srt` (Subtitles → Add → Upload file → With timing; set the video language to English first). Visibility: Public. Not made for kids.
 
