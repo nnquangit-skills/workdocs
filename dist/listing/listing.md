@@ -8,7 +8,7 @@ workdocs - six honest documentation pages, written from the code
 
 ## Tagline (one line)
 
-Free. Your agent reads the code and writes Overview, Setup, How it works, Security, API and a Demo script as static HTML, each section naming the files it came from, with self-running animated flows. Pairs with workmap.
+Free. Your agent reads the code and writes Overview, Setup, How it works, Security, API and a Demo script as static HTML, each section naming the files it came from, with self-running animated flows and interactive diagrams. Pairs with workmap.
 
 ## Description
 
@@ -39,7 +39,7 @@ workdocs documents what the project **is**. [workmap](https://www.agensi.io/skil
 
 ## Requirements
 
-A shell and a file editor for the agent; nothing for the pages (no runtime, framework or network). Optional helpers used when present: a diagram skill for the architecture diagram, `playwright-cli` for browser QA, a Remotion skill for an optional video.
+A shell and a file editor for the agent; nothing for the pages (no runtime, framework or network). Optional helpers used when present: the archify skill for the diagrams (diagram-design as the alternative), `playwright-cli` for browser QA, a Remotion skill for an optional video.
 
 ## Privacy
 
@@ -78,7 +78,7 @@ Wrote six pages in `docs/` from the code (commit 3f2a9c1).
 - **Does it need a build step or a server?** No. The pages are finished HTML; open them from a folder or serve `docs/` with any static server.
 - **Can I edit the pages by hand?** Yes. Content outside the markers, and sections marked `data-workdocs="keep"`, survive the next run.
 - **What if my project has no API or no security story?** The page still exists and says exactly what is absent and what exists instead. Nothing is invented.
-- **Does it write diagrams?** The architecture diagram and the animated flow are drawn from the real call sites as inline SVG; with archify or diagram-design installed, the agent uses them.
+- **Does it write diagrams?** Yes. The animated flow and the step player are always drawn from the real call sites. With the archify skill installed, the agent also draws interactive architecture, workflow, lifecycle and data-flow diagrams, each node citing its source lines, and keeps their JSON sources in `docs/diagrams/src/` so the next run regenerates them; without it, the architecture is an inline SVG.
 - **Is workmap required?** No. workdocs is complete on its own; workmap is a separate skill it links to when installed.
 
 ## Known limitations
