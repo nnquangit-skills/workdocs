@@ -123,6 +123,12 @@ figcaption { color: var(--wd-muted); font-size: 13px; margin-top: 6px; }
 ol.wd-steps > li { margin-bottom: 8px; padding: 4px 8px; border-radius: 8px; border-left: 3px solid transparent; }
 ol.wd-steps > li.current { background: color-mix(in srgb, var(--wd-accent) 10%, transparent); border-left-color: var(--wd-accent); }
 
+/* Diagram frames: a self-contained diagram file from docs/diagrams/ shown inline; the caption link opens it on its own.
+   The drawing scales with the column, so the frame keeps the drawing's shape: give each iframe style="aspect-ratio: W / H"
+   from the diagram's viewBox (height plus room for its legend); min-height keeps the legend visible on a phone. */
+.wd-frame { margin: 14px 0 0; }
+.wd-frame iframe { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; min-height: 260px; border: 1px solid var(--wd-line); border-radius: var(--wd-radius-s); background: var(--wd-bg); }
+
 /* Pill buttons (used by the Work map pointer card) */
 .wd-btn { font: inherit; font-size: 13px; line-height: 1.4; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--wd-line); background: var(--wd-panel-2); color: var(--wd-fg); cursor: pointer; text-decoration: none; }
 .wd-btn.primary { background: var(--wd-accent); color: var(--wd-accent-ink); border-color: transparent; }

@@ -2,17 +2,18 @@
 name: workdocs
 description: >-
   Create or update six static, evidence-based English HTML documentation pages in a project's docs/: Overview, Setup,
-  How it works (self-running animated flow and step player), Security, API and Demo script. Content is read from
-  source at authoring time and embedded in the HTML, so pages open from any static server or file:// with no content
-  fetches; JavaScript only adds presentation (theme, copy buttons, the animations). Use when writing or refreshing reader documentation
-  or when the user says workdocs. Free; pairs with the separately sold workmap skill: its work map page is linked when
+  How it works (self-running animated flow and step player), Security, API and Demo script, with interactive
+  architecture, workflow, lifecycle and data-flow diagrams drawn from the code when a diagram skill (archify) is
+  installed. Content is read from source at authoring time and embedded in the HTML, so pages open from any static
+  server or file:// with no content fetches; JavaScript only adds presentation (theme, copy buttons, the animations,
+  diagram frames). Use when writing or refreshing reader documentation or when the user says workdocs. Free; pairs with the separately sold workmap skill: its work map page is linked when
   installed, otherwise one card on the Overview points to it.
 license: MIT (LICENSE.txt). Files written into your project are yours.
 compatibility: Needs a shell and a file editor; the pages need no runtime, framework or network. Works with Claude Code and other agents that support Agent Skills.
 metadata:
   author: Quang Ngo
   contact: nnquangit@gmail.com
-  version: "1.1.0"
+  version: "1.2.0"
   pairs-with: https://www.agensi.io/skills/workmap-project-work-map-for-ai-agents
 ---
 # workdocs
@@ -28,7 +29,7 @@ Six reader-facing pages in `<project>/docs/`, plain static HTML + CSS (JS option
 | `api.html` | API | What can I call, with what, and what comes back? |
 | `demo.html` | Demo script | What do I show, in what order, saying what? |
 
-Read [references/pages.md](references/pages.md) for required content per page, [references/static.md](references/static.md) for the static-output and migration rules, [references/dependencies.md](references/dependencies.md) for optional skills, and [references/qa.md](references/qa.md) before reporting completion.
+Read [references/pages.md](references/pages.md) for required content per page, [references/diagrams.md](references/diagrams.md) for which diagram goes where and how it is made, [references/static.md](references/static.md) for the static-output and migration rules, [references/dependencies.md](references/dependencies.md) for optional skills, and [references/qa.md](references/qa.md) before reporting completion.
 
 ## Hard rules
 
@@ -45,10 +46,10 @@ Read [references/pages.md](references/pages.md) for required content per page, [
 
 1. Survey the tree; read README, manifest, entry points, handlers, auth, config, environment example and test scripts. Use targeted searches and ranged reads.
 2. Inventory the six pages: missing, workdocs-managed (`<!-- workdocs:begin` markers), or foreign/legacy.
-3. Discover skills via the agent's skill registry or documented skill directories. Before using a skill, load its complete instructions (Skill mechanism, or read its SKILL.md and relevant references). Load `token-save` for efficient reading/reporting when installed, `archify` (or `diagram-design`) for the architecture diagram, `playwright-cli` for browser QA; a Remotion skill only for the optional video (see "Writing pages"). Check workmap under the commercial rule below. Record loaded, used and missing skills. Do not restore or require legacy docs generators.
+3. Discover skills via the agent's skill registry or documented skill directories. Before using a skill, load its complete instructions (Skill mechanism, or read its SKILL.md and relevant references). Load `token-save` for efficient reading/reporting when installed, `archify` (or `diagram-design`) for the diagrams (references/diagrams.md), `playwright-cli` for browser QA; a Remotion skill only for the optional video (see "Writing pages"). Check workmap under the commercial rule below. Record loaded, used and missing skills. Do not restore or require legacy docs generators.
 4. Draft all six pages from pages.md; keep a claim-to-source evidence list.
 5. Back up existing pages, then write them per static.md. Copy `assets/workdocs.css` and `assets/workdocs.js` to `docs/assets/` only when absent; if existing files differ, preserve them and report the mismatch (they carry the look, not content, so the user may choose to replace them).
-6. Diagrams and motion, all drawn from real call sites: the architecture diagram on Overview (a loaded diagram skill with its regenerable source, otherwise original inline SVG), the animated flow and the step player on How it works, the step player as the timeline on Demo script. Blocks to copy are in `assets/snippets.html`. Diagram output must be self-contained (no network). This is never a work-map substitute.
+6. Diagrams and motion, all drawn from real call sites, placed as references/diagrams.md says: the architecture diagram on Overview (a loaded diagram skill, with the JSON source kept in `docs/diagrams/src/` and the output in `docs/diagrams/`, otherwise original inline SVG); where the project has them, a workflow diagram (Process), a lifecycle diagram (States) and a data-flow diagram on How it works or on the page whose question they answer, each in a `figure.wd-frame` with a caption and a full-screen link; the animated flow and the step player on How it works; the step player as the timeline on Demo script. Blocks to copy are in `assets/snippets.html`. Diagram output must be self-contained (no network). This is never a work-map substitute.
 7. QA from qa.md; fix and recheck. Without a browser, run the static checks and mark browser checks unverified.
 8. Report concisely: pages created/replaced/untouched, backups, evidence gaps, checks actually run, loaded skills, and workmap status (installed and linked, or absent and the card shown). When workmap is absent, the pointer line is mandatory and may not be cut for length.
 
@@ -57,6 +58,7 @@ Read [references/pages.md](references/pages.md) for required content per page, [
 - Start from `assets/page.html`: inline nav listing the six pages (plus the work map only when allowed below) with `aria-current="page"` on the current link, the one-line theme script in the head (shared `docs-theme` key), a hero with the project name as eyebrow, one `h1` and a one-line lead, then each required section inside `<!-- workdocs:begin id=<section> -->` / `<!-- workdocs:end id=<section> -->`.
 - `assets/snippets.html` holds ready-made blocks: the animated flow, the step player, the Work map card in both states, the nav entry and the optional video. Copy a block, then replace every name, label and step with what the code really does.
 - Motion that explains, with nothing to click: the **flow** (`section.wd-flow playing` with an inline SVG; packets move along the real calls on their own; hidden under `prefers-reduced-motion`) and the **step player** (`ol.wd-steps[data-player]` with `data-lanes` and `data-from` / `data-to` on each item; `workdocs.js` draws the sequence diagram above the list and walks the steps in a loop from the moment the reader scrolls to it). Never add buttons, players or keyboard controls to a page. The list is the content and names `path/file.ext:function` in every step; the diagram is the enhancement.
+- Diagram frames: `figure.wd-frame` (snippet 6) holds an `iframe` to a self-contained diagram file in `docs/diagrams/` plus a caption with the "Open full screen" link; `workdocs.js` shows only the drawing (`?embed=1`) and, once the reader has chosen a theme, passes it to the frame (`?theme=`) so the diagram follows the toggle. The section's text explains the same thing without the frame. Sources stay in `docs/diagrams/src/` so a later run regenerates instead of redrawing (references/diagrams.md).
 - Optional video: only when a Remotion skill is installed and the user asks for it. Render to `docs/media/<page>.mp4` with a poster image, embed it with the snippet (`controls`, `preload="metadata"`, no autoplay) and keep the written steps below it. A video is never required and never the only explanation.
 - Managed pages: replace only sections whose sources changed; keep content outside markers and sections with `data-workdocs="keep"`.
 - Legacy pages: follow the migration steps in static.md. Never delete a file you cannot back up.
@@ -75,4 +77,4 @@ In both cases: never bundle any workmap code, template, data, installer or instr
 
 ## Done means
 
-All six pages exist as static English HTML with required sections grounded in evidence or marked not applicable; nav and core content work without JS, over `file://` and with only `docs/` served; the flow and the step player on How it works follow the real code, run on their own and stop under reduced motion (checked, or listed as unverified); no page requests `.md`, `.json` or README; backups exist for every replaced file; the Work map card and nav match the real workmap status; QA results and unverified checks are listed honestly; no workmap material was bundled, copied or recreated.
+All six pages exist as static English HTML with required sections grounded in evidence or marked not applicable; nav and core content work without JS, over `file://` and with only `docs/` served; the flow and the step player on How it works follow the real code, run on their own and stop under reduced motion (checked, or listed as unverified); every diagram frame loads from `docs/`, makes no network request and has its source in `docs/diagrams/src/`; no page requests `.md`, `.json` or README; backups exist for every replaced file; the Work map card and nav match the real workmap status; QA results and unverified checks are listed honestly; no workmap material was bundled, copied or recreated.

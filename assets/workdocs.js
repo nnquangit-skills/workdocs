@@ -1,5 +1,5 @@
-// workdocs: optional presentation helper. Adds a theme toggle, copy buttons on code blocks, and runs the animated
-// flow and the step player (both self-running: documentation is read, not operated). It never loads or inserts documentation content:
+// workdocs: optional presentation helper. Adds a theme toggle, copy buttons on code blocks, runs the animated flow and
+// the step player (both self-running: documentation is read, not operated) and keeps diagram frames in the docs theme. It never loads or inserts documentation content:
 // every page is complete and readable without it.
 (function () {
   "use strict";
@@ -42,8 +42,30 @@
       var next = isDark() ? "light" : "dark";
       root.setAttribute("data-theme", next);
       store("set", next);
+      syncFrames();
     });
     bar.appendChild(b);
+  }
+
+  // Diagram frames: <figure class="wd-frame"> with an <iframe> to a self-contained diagram file in docs/diagrams/.
+  // Those files (archify output) read ?embed=1 (drawing only, no toolbar) and ?theme=light|dark from their URL, so the
+  // frame shows just the drawing and, once the reader has chosen a theme, follows the docs toggle. The caption link
+  // keeps the plain file (full viewer) and gets the same theme. Local files only; nothing is fetched from elsewhere.
+  function syncFrames() {
+    var chosen = root.getAttribute("data-theme");
+    var frames = document.querySelectorAll(".wd-frame iframe");
+    for (var i = 0; i < frames.length; i++) {
+      var f = frames[i], base = f.getAttribute("data-src") || f.getAttribute("src");
+      if (!base || /^[a-z][a-z0-9+.-]*:/i.test(base)) continue;
+      f.setAttribute("data-src", base);
+      var file = base.split("?")[0], q = "?embed=1" + (chosen ? "&theme=" + chosen : "");
+      if (f.getAttribute("src") !== file + q) f.setAttribute("src", file + q);
+      var links = f.parentNode.querySelectorAll("a[href]");
+      for (var j = 0; j < links.length; j++) {
+        var h = links[j].getAttribute("href").split("?")[0];
+        if (h === file) links[j].setAttribute("href", chosen ? file + "?theme=" + chosen : file);
+      }
+    }
   }
 
   function addCopyButtons() {
@@ -173,7 +195,7 @@
     }
   }
 
-  function init() { addToggle(); addCopyButtons(); startFlows(); startStepPlayers(); }
+  function init() { addToggle(); addCopyButtons(); startFlows(); startStepPlayers(); syncFrames(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();

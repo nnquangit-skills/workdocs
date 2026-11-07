@@ -1,6 +1,6 @@
 # Page standard
 
-Each page: one `<h1>`, the required sections below in this order (section ids in brackets, used in the workdocs markers), and a footer line "Written from <commit or date>; sources: <files>". Optional sections go after the required ones. All text in English; all content embedded statically (see static.md).
+Each page: one `<h1>`, the required sections below in this order (section ids in brackets, used in the workdocs markers), and a footer line "Written from <commit or date>; sources: <files>". Optional sections go after the required ones, except the diagram sections of How it works (Process, States, Data flow), which follow Step by step. All text in English; all content embedded statically (see static.md).
 
 General mistakes to avoid on every page:
 - Copying README paragraphs wholesale; summarise instead and name the README section.
@@ -16,7 +16,7 @@ General mistakes to avoid on every page:
 Required:
 - **What it is** [`what`]: 2–4 sentences: the problem, the user, what the project does. Source: README intro, manifest description.
 - **Status** [`status`]: maturity; what is real vs mocked/stubbed; known limits and open blockers. Source: README, flags, stub classes, review notes.
-- **Architecture** [`arch`]: main components and how they connect (diagram plus a short list). Source: layout, entry points, imports.
+- **Architecture** [`arch`]: main components and how they connect: the architecture diagram (in a `figure.wd-frame` when a diagram skill produced it, otherwise inline SVG; see diagrams.md) plus a short list. Source: layout, entry points, imports.
 - **Pages** [`pages`]: cards linking the other five pages, plus the Work map card in the state that matches reality (installed → link card; absent → pointer card; both in `assets/snippets.html`).
 - **Quick start** [`run`]: the shortest install + run commands and a link to Setup for everything else.
 
@@ -41,6 +41,11 @@ Required:
 - **Key components** [`components`]: table: component, responsibility, file.
 - **Failure paths** [`errors`]: what happens on the main errors, from the actual error handling.
 - **Real vs simulated** [`real-vs-mock`]: which parts have mock and real implementations, which runs by default.
+
+Optional, right after Step by step and in this order, when the project has them (see diagrams.md for the rule and the frame):
+- **Process** [`process`]: the workflow diagram (lanes, phases, gates, branches) in a frame, plus a paragraph on where the run can stop or branch.
+- **States** [`states`]: the lifecycle diagram of the main object in a frame, plus the list of statuses and what moves one to the next, from the code that sets them.
+- **Data flow** [`data`]: the data-flow diagram in a frame, plus where the data comes from, what transforms it and who consumes it. Goes on Security (Assets & trust boundaries) when the point is what crosses a trust boundary, or on API when the pipeline is the interface.
 
 ## security.html — Security
 

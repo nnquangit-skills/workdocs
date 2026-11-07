@@ -23,12 +23,14 @@ Report only checks you actually ran. Anything skipped is listed as "not verified
 - [ ] **JS disabled** (browser setting, or block `*.js` requests): nav and every required section still present.
 - [ ] **file://**: open each page directly; content and nav present. Note honestly what differs (for example `localStorage` or iframes may behave differently).
 - [ ] Linked diagrams load from `docs/` and make no network requests.
+- [ ] Diagram frames (`figure.wd-frame`): the `iframe` has a `title`; the caption's "Open full screen" link resolves; the frame loads from `docs/` served alone and from `file://`; with JS the drawing follows the docs theme toggle; a source file exists in `docs/diagrams/src/` for every file in `docs/diagrams/` (see diagrams.md).
 
 With **playwright-cli**: open each page, `resize 375 812` and a desktop size, `set-color-scheme light|dark`, `eval "document.documentElement.scrollWidth"`, `console`, `requests`; block scripts with `route "**/*.js" --status=404` (or a context with JS disabled) and check content; open `file://` URLs; then `close`.
 
 ## Static checks (no browser needed)
 
 - Every `href`/`src` resolves to a file inside `docs/` or a deliberate external link.
+- Diagram files make no network requests: `grep -nE 'fetch\(|XMLHttp[R]equest|@import|url\(https?:|(src|href)="https?:' docs/diagrams/*.html` shows only `xmlns` and URLs inside text or comments.
 - Each `<!-- workdocs:begin id=x -->` has a matching `end`.
 - Search the six pages for loaders and leftovers: `grep -nE 'fetch\(|XMLHttp[R]equest|data-(sr[c]|m[d]|wd-m[d]|includ[e])=|includeMarkdow[n]|Loading|TODO|lorem' docs/*.html`, and for anything that looks like a key (`sk-`, `AKIA`, `-----BEGIN`).
 - Grep for non-English reader text (for a project previously documented in another language, search for that language's common words or diacritics).

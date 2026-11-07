@@ -8,10 +8,11 @@ Most project docs are missing, stale, or written from memory. workdocs puts the 
 docs/
 ├── index.html          Overview: what it is, status (real vs mocked), architecture, quick start
 ├── setup.html          Setup: prerequisites, install, configuration, run, test, verify, troubleshooting
-├── how-it-works.html   How it works: animated flow + one request walked step by step
+├── how-it-works.html   How it works: animated flow, one request step by step, process and state diagrams
 ├── security.html       Security: trust boundaries, threats and controls, secrets, known gaps
 ├── api.html            API: endpoints or commands, shapes, errors, try it
 ├── demo.html           Demo script: a presenter's script with fallbacks and cleanup
+├── diagrams/           self-contained interactive diagrams (architecture, workflow, lifecycle, data flow) + src/ to regenerate them
 └── assets/             workdocs.css, workdocs.js (presentation only)
 ```
 
@@ -19,6 +20,7 @@ docs/
 
 - **Evidence first.** Versions, ports, commands, endpoints and guarantees come from the repository, never from memory. If a page does not apply, it says what is absent and what exists instead.
 - **Static.** Content is embedded when the page is written. An opened page fetches nothing, works from `file://` and stays readable with JavaScript off. Mock, simulated and flag-dependent behaviour is labelled wherever it appears.
+- **Diagrams from the code.** With the archify skill installed, the agent draws an interactive architecture diagram on the Overview and, where the project has them, a workflow, a lifecycle and a data-flow diagram, each node citing the source lines it came from. The JSON sources stay in `docs/diagrams/src/`, so the next run regenerates instead of redrawing; the frames follow the page's light / dark choice. Without a diagram skill, an inline SVG.
 - **Motion with nothing to click.** On How it works, an animated flow shows the real calls between the real components, and a sequence diagram walks one request through its steps on its own. The Demo script uses the same player as a timeline. CSS and SVG only; both stop under reduced motion.
 - **One look.** A pale map-paper background, one reading column, a sticky pill navigation, every section a card; light and dark with one toggle, which the workmap page shares. The same visual language as workmap, so the two sit side by side as one site.
 - **Safe updates.** Managed sections carry `<!-- workdocs:begin id=… -->` markers; a later run regenerates only what changed, backs up what it replaces and keeps what you wrote by hand. Legacy pages are migrated, not deleted.
@@ -61,7 +63,7 @@ workdocs/
 ├── LICENSE.txt           MIT
 ├── CHANGELOG.md
 ├── assets/               page.html (template), workdocs.css, workdocs.js, snippets.html (flow, step player, cards, video)
-├── references/           pages.md (content per page), static.md (static rules, migration), dependencies.md, qa.md
+├── references/           pages.md (content per page), diagrams.md (which diagram where, archify frames), static.md (static rules, migration), dependencies.md, qa.md
 ├── scripts/package.sh    builds the zip for a marketplace upload
 └── demo/                 the Remotion demo video and the Chrome recording script (not part of the skill)
 ```

@@ -68,3 +68,12 @@
   <video controls preload="metadata" poster="media/how-it-works.jpg" src="media/how-it-works.mp4" width="1920" height="1080">Your browser cannot play this video. The steps below say the same thing.</video>
   <figcaption>One checkout request in 30 seconds. The same steps are listed below.</figcaption>
 </figure>
+
+<!-- 6. Diagram frame (Overview → Architecture; How it works → Process / States / Data flow; see references/diagrams.md).
+        The file inside docs/diagrams/ is self-contained (archify output); its JSON source sits in docs/diagrams/src/.
+        workdocs.js adds ?embed=1 (drawing only) and the docs theme to the iframe; the link opens the full viewer.
+        aspect-ratio = the drawing's viewBox width / (height + 50 for the legend): grep -o 'viewBox="[^"]*"' docs/diagrams/<name>.html | head -1 -->
+<figure class="wd-frame">
+  <iframe src="diagrams/architecture.html" title="Architecture diagram: the storefront, the gateway, the API, PostgreSQL and the payment adapter" loading="lazy" style="aspect-ratio: 1230 / 640"></iframe>
+  <figcaption>Hover a node to highlight its routes. <a href="diagrams/architecture.html" target="_blank" rel="noopener">Open full screen ↗</a> · drawn from <code>src/server.ts</code>, source <code>docs/diagrams/src/architecture.json</code></figcaption>
+</figure>

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 - 2026-11-07
+
+- Diagrams: `references/diagrams.md` says which diagram answers which reader question and where it goes: architecture on the Overview (required), workflow (Process), lifecycle (States) and data flow on How it works, or on Security / API when that is where the question is asked. Made with the archify skill when installed, from cited source lines, with the JSON source kept in `docs/diagrams/src/` for regeneration; inline SVG otherwise.
+- Frames: `figure.wd-frame` (snippet 6) embeds a self-contained diagram file with a caption and an "Open full screen" link; `workdocs.js` shows only the drawing (`?embed=1`) and keeps it in the docs theme (`?theme=`) once the reader has chosen one; the frame keeps the drawing's shape through `aspect-ratio`, so nothing is clipped at any width.
+- QA: diagram checks (no network, `iframe title`, caption link, source present, both themes, 375 px).
+
 ## 1.1.0 - 2026-11-07
 
 - Look: same visual language as the workmap skill (map-paper background, teal accent, pill navigation, section cards, tinted status tags, eyebrow above the title), in workdocs' own stylesheet and `--wd-` tokens. No workmap file is used.

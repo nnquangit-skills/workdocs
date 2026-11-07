@@ -16,9 +16,9 @@ Documentation written from the code, not from memory.
 
 Most project docs are missing, stale, or written from memory. **workdocs** puts the job on the agent. Say `workdocs` in a project and it reads the manifest, entry points, handlers, config and tests, then writes six reader-facing pages in `docs/`:
 
-- **Overview** - what it is, status (real vs mocked), architecture, quick start
+- **Overview** - what it is, status (real vs mocked), an interactive architecture diagram, quick start
 - **Setup** - prerequisites, install, configuration, run, test, verify, troubleshooting
-- **How it works** - an animated flow of the real calls, and one request walked through a sequence diagram
+- **How it works** - an animated flow of the real calls, one request walked through a sequence diagram, and workflow and lifecycle diagrams when the project has them
 - **Security** - trust boundaries, threats and controls, secrets, known gaps
 - **API** - endpoints or commands, shapes, errors, try it
 - **Demo script** - a presenter's script with fallbacks and cleanup
@@ -27,6 +27,7 @@ Each section names the files it came from. If a page does not apply, it says wha
 
 ## What makes it different
 
+- **Diagrams from the code.** With the archify skill installed, the agent draws interactive architecture, workflow, lifecycle and data-flow diagrams, each node citing the source lines it came from, and keeps their sources so the next run regenerates them. Without it, an inline SVG.
 - **Static.** Content is embedded when the page is written. An opened page fetches nothing, works from `file://` and stays readable with JavaScript off.
 - **Motion with nothing to click.** On How it works, an animated flow shows the real calls between the real components and a sequence diagram walks one request through its steps on its own. Both stop under reduced motion. CSS and SVG only; no framework, no build step.
 - **One look.** A pale map-paper background, one reading column, pill navigation, every section a card, light and dark with one toggle.
