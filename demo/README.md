@@ -1,6 +1,6 @@
 # Demo video (not part of the skill package)
 
-`video/` is a Remotion project: a chat scene where the user types only `/workdocs`, a slide to a browser frame playing a real recording of the six pages, and an end card, with an English voice-over (`video/public/vo-*.m4a`, made with the macOS `say` command, voice Samantha). No marketplace is named in the video.
+`video/` is a Remotion project: a chat scene where the user types only `/workdocs`, a slide to a browser frame playing a real recording of the six pages, and an end card, with an English voice-over (`video/public/vo-*.m4a`, generated locally with Kokoro-82M, Apache-2.0, voice `af_heart`; see `demo/tts.md`). No marketplace is named in the video.
 
 Rebuild after changing the pages (the recording uses the documentation site of the workmap repo, `tracking/docs`, as a sample; any workdocs site works):
 

@@ -7,8 +7,8 @@ import { ChatScene } from "./scenes/ChatScene";
 import { Outro } from "./scenes/Outro";
 
 // Scene durations in seconds. Total = sum - the two transitions.
-// Scene lengths follow the narration clips in public/ (vo-chat 18.5 s, vo-browser 17.9 s, vo-outro 5.9 s).
-export const SCENES = { chat: 19.2, browser: 18.5, outro: 6.8, cut: 0.5, fade: 0.4 };
+// Scene lengths follow the narration clips in public/ (vo-chat 17.5 s, vo-browser 19.9 s, vo-outro 6.1 s).
+export const SCENES = { chat: 18.2, browser: 20.5, outro: 7.0, cut: 0.5, fade: 0.4 };
 
 export const WorkdocsDemo = () => {
   const { fps } = useVideoConfig();
