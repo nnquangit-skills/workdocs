@@ -14,7 +14,10 @@ Most project docs are missing, stale, or written from memory. workdocs puts the 
 
 The pages are plain static HTML. They open from a folder, fetch nothing, and stay readable with JavaScript off. On How it works, an animated flow shows the real calls between the real components, and a sequence diagram walks one request through its steps on its own.
 
-Get workdocs (free): https://github.com/nnquangit-skills/workdocs
+New in 1.2: interactive architecture, workflow, lifecycle and data-flow diagrams drawn from the code, embedded on the pages (when the archify diagram skill is installed).
+
+Get workdocs (free): https://www.agensi.io/skills/workdocs-honest-docs-pages-written-from-the-code
+Source on GitHub (MIT): https://github.com/nnquangit-skills/workdocs
 
 Pairs with workmap, the skill that tracks what the project is doing: a live map of Epics → Features → Tasks → Subtasks with status and owner on every node, kept up to date by the agents through a mandatory reporting protocol.
 https://www.agensi.io/skills/workmap-project-work-map-for-ai-agents
@@ -28,8 +31,6 @@ Chapters
 Requirements: a shell and a file editor for the agent; nothing for the pages. MIT licence.
 
 #ClaudeCode #AIAgents #AgentSkills #Documentation #workdocs #workmap
-
-(Add the Agensi listing link under "Get workdocs" once the listing is approved.)
 
 ## Tags
 
