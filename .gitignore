@@ -1,6 +1,10 @@
-.bak/
-.DS_Store
-__pycache__/
 *.pyc
-.playwright-cli/
+.DS_Store
+.bak/
 .claude/
+.playwright-cli/
+__pycache__/
+demo/video/node_modules
+demo/video/out/
+demo/video/public/chrome.webm
+dist/*.zip
