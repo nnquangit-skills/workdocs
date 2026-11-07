@@ -73,6 +73,32 @@
   </section>
   <!-- workdocs:end id=steps -->
 
+  <!-- workdocs:begin id=process -->
+  <section id="process">
+    <h2>Process</h2>
+    <p>The same run seen as lanes and gates. You say one word; the agent surveys the tree and inventories <code>docs/</code>, drafts the six pages with a claim-to-source list, backs up what it will replace, writes the pages, their frames and the assets, serves <code>docs/</code> alone for QA and reports. The bottom lane holds the gates that stop invention: every claim needs a file (hard rule 1); a page that does not apply says what is absent instead of inventing an API or a setup step (hard rules 4 and 5); without a browser the static checks run and the rest is reported as unverified (step 7).</p>
+    <figure class="wd-frame">
+      <iframe src="diagrams/workflow.html" title="Workflow diagram: you say workdocs; the agent surveys and inventories, drafts six pages, backs up and writes, runs QA and reports; a gates lane shows evidence first, the not-applicable rule and the no-browser branch" loading="lazy" style="aspect-ratio: 1100 / 750"></iframe>
+      <figcaption>Lanes are who acts; the red lane is where the run refuses to guess. <a href="diagrams/workflow.html" target="_blank" rel="noopener">Open full screen ↗</a> · drawn from <code>SKILL.md</code> "Hard rules" and "Run", <code>references/qa.md</code>; source <code>diagrams/src/workflow.json</code>, rendered with archify (MIT).</figcaption>
+    </figure>
+
+    <p class="wd-source">Source: <code>SKILL.md</code> "Hard rules" 1, 4, 5 and "Run" steps 1-8, <code>references/qa.md</code></p>
+  </section>
+  <!-- workdocs:end id=process -->
+
+  <!-- workdocs:begin id=states -->
+  <section id="states">
+    <h2>States</h2>
+    <p>What happens to one page over time. A missing page is written on the first run, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers. When the code moves on, the next run regenerates only the sections whose sources changed and backs the old file up first. A page found on disk that was written by hand or loads markdown at open time is backed up in full (checksum confirmed) and then migrated, carrying its unique details forward. A section you mark <code>data-workdocs="keep"</code> is never regenerated, and text outside the markers is left alone.</p>
+    <figure class="wd-frame">
+      <iframe src="diagrams/lifecycle.html" title="Lifecycle diagram: missing, written, sources changed, regenerated on the main row; a legacy page is backed up and migrated on the second row; a kept section sits on the third row" loading="lazy" style="aspect-ratio: 1001 / 634"></iframe>
+      <figcaption>The middle row is a page found on disk; the bottom one a section you marked keep. <a href="diagrams/lifecycle.html" target="_blank" rel="noopener">Open full screen ↗</a> · drawn from <code>SKILL.md</code> "Writing pages", <code>references/static.md</code> "Migrating legacy pages", <code>assets/page.html</code>; source <code>diagrams/src/lifecycle.json</code>, rendered with archify (MIT).</figcaption>
+    </figure>
+
+    <p class="wd-source">Source: <code>SKILL.md</code> "Writing pages" and hard rule 6, <code>references/static.md</code> "Migrating legacy pages"</p>
+  </section>
+  <!-- workdocs:end id=states -->
+
   <!-- workdocs:begin id=components -->
   <section id="components">
     <h2>Key components</h2>
@@ -81,12 +107,13 @@
       <tbody>
         <tr><td>Skill instructions</td><td>Hard rules, the eight-step run, how to write pages, the work-map rule, what "done" means</td><td><code>SKILL.md</code></td></tr>
         <tr><td>Page standard</td><td>Required sections and section ids per page, mistakes to avoid</td><td><code>references/pages.md</code></td></tr>
+        <tr><td>Diagram rules</td><td>Which diagram answers which question and where it goes; archify files, frames, attribution, QA</td><td><code>references/diagrams.md</code></td></tr>
         <tr><td>Static rules and migration</td><td>What a page may load, what is forbidden, how legacy pages are backed up and migrated</td><td><code>references/static.md</code></td></tr>
         <tr><td>Optional helpers</td><td>Which skills improve a step and the fallback when missing</td><td><code>references/dependencies.md</code></td></tr>
         <tr><td>QA checklist</td><td>Per-page, static-delivery, static and honesty checks</td><td><code>references/qa.md</code></td></tr>
         <tr><td>Page skeleton</td><td>Nav, hero, one managed section, footer, theme script</td><td><code>assets/page.html</code></td></tr>
         <tr><td>Look</td><td>Tokens (<code>--wd-*</code>), light and dark, cards, tables, tags, diagram and stage styles</td><td><code>assets/workdocs.css</code></td></tr>
-        <tr><td>Presentation script</td><td><code>addToggle</code>, <code>addCopyButtons</code>, <code>startFlows</code>, <code>startStepPlayers</code>; never inserts content</td><td><code>assets/workdocs.js</code></td></tr>
+        <tr><td>Presentation script</td><td><code>addToggle</code>, <code>addCopyButtons</code>, <code>startFlows</code>, <code>startStepPlayers</code>, <code>syncFrames</code>; never inserts content</td><td><code>assets/workdocs.js</code></td></tr>
         <tr><td>Snippets</td><td>Flow, step player, Work map cards, nav entry, video block to copy and adapt</td><td><code>assets/snippets.html</code></td></tr>
         <tr><td>Packaging</td><td>Builds <code>dist/workdocs-&lt;version&gt;.zip</code> with one top-level folder</td><td><code>scripts/package.sh</code></td></tr>
       </tbody>
@@ -118,7 +145,7 @@
   <!-- workdocs:end id=real-vs-mock -->
 
 
-  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, references/, assets/</footer>
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, references/, assets/, docs/diagrams/src/</footer>
 </main>
 <script src="assets/workdocs.js" defer></script>
 </body>

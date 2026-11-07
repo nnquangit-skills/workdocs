@@ -1,0 +1,363 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "One run of workdocs",
+    "output": "docs/diagrams/workflow.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "git@github.com:nnquangit-skills/workdocs.git",
+      "revision": "6cec3817724c6fd532e25005fa3860035347d504",
+      "link_mode": "local-only"
+    }
+  },
+  "lanes": [
+    {
+      "id": "you",
+      "label": "You"
+    },
+    {
+      "id": "agent",
+      "label": "Agent"
+    },
+    {
+      "id": "checks",
+      "label": "Gates",
+      "variant": "exception"
+    },
+    {
+      "id": "files",
+      "label": "Project and docs/"
+    }
+  ],
+  "phases": [
+    {
+      "id": "read",
+      "label": "Read",
+      "fromCol": 0,
+      "toCol": 1
+    },
+    {
+      "id": "write",
+      "label": "Write",
+      "fromCol": 2,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "verify",
+      "label": "Verify and report",
+      "fromCol": 4,
+      "toCol": 5
+    }
+  ],
+  "groups": [
+    {
+      "id": "no-invention",
+      "label": "Evidence or \"not stated\"",
+      "lane": "checks",
+      "fromCol": 1,
+      "toCol": 2,
+      "variant": "security"
+    }
+  ],
+  "mainPath": [
+    "ask",
+    "survey",
+    "draft",
+    "write",
+    "qa",
+    "report"
+  ],
+  "nodes": [
+    {
+      "id": "ask",
+      "lane": "you",
+      "col": 0,
+      "type": "external",
+      "label": "workdocs",
+      "sublabel": "or \"refresh the docs\"",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 3,
+          "end_line": 9,
+          "label": "trigger"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "survey",
+      "lane": "agent",
+      "col": 1,
+      "type": "backend",
+      "label": "Survey + inventory",
+      "sublabel": "README, manifest, src, tests",
+      "tag": "existing pages: new / managed / legacy",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 47,
+          "end_line": 49,
+          "label": "steps 1-3"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "evidence",
+      "lane": "checks",
+      "col": 1,
+      "type": "security",
+      "label": "Evidence first",
+      "sublabel": "no claim without a file",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 36,
+          "end_line": 36,
+          "label": "hard rule 1"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "draft",
+      "lane": "agent",
+      "col": 2,
+      "type": "backend",
+      "label": "Draft six pages",
+      "sublabel": "claim-to-source list",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 50,
+          "end_line": 50,
+          "label": "step 4"
+        },
+        {
+          "path": "references/pages.md",
+          "line": 1,
+          "end_line": 12,
+          "label": "page standard"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "absent",
+      "lane": "checks",
+      "col": 2,
+      "type": "security",
+      "label": "Page does not apply?",
+      "sublabel": "say what is absent",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 39,
+          "end_line": 40,
+          "label": "hard rules 4-5"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "backup",
+      "lane": "files",
+      "col": 3,
+      "type": "database",
+      "label": "Back up",
+      "sublabel": "docs/.workdocs-backup/",
+      "width": 176,
+      "sources": [
+        {
+          "path": "references/static.md",
+          "line": 22,
+          "end_line": 24,
+          "label": "migration step 1"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "write",
+      "lane": "agent",
+      "col": 3,
+      "type": "backend",
+      "label": "Write pages + frames",
+      "sublabel": "markers, assets, diagrams",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 51,
+          "end_line": 52,
+          "label": "steps 5-6"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "qa",
+      "lane": "agent",
+      "col": 4,
+      "type": "backend",
+      "label": "QA",
+      "sublabel": "serve docs/ alone",
+      "tag": "console · network · themes · 375 px",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 53,
+          "end_line": 53,
+          "label": "step 7"
+        },
+        {
+          "path": "references/qa.md",
+          "line": 7,
+          "end_line": 20,
+          "label": "per page"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "nobrowser",
+      "lane": "checks",
+      "col": 4,
+      "type": "security",
+      "label": "No browser?",
+      "sublabel": "static checks, rest unverified",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 53,
+          "end_line": 53,
+          "label": "step 7"
+        },
+        {
+          "path": "references/qa.md",
+          "line": 30,
+          "end_line": 37,
+          "label": "static checks"
+        }
+      ],
+      "height": 76
+    },
+    {
+      "id": "report",
+      "lane": "you",
+      "col": 5,
+      "type": "frontend",
+      "label": "Report",
+      "sublabel": "pages, backups, gaps, checks",
+      "tag": "+ workmap status",
+      "width": 176,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 54,
+          "end_line": 54,
+          "label": "step 8"
+        }
+      ],
+      "height": 76
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-ask",
+      "from": "ask",
+      "to": "survey",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-evidence",
+      "from": "survey",
+      "to": "evidence",
+      "label": "every claim",
+      "variant": "security"
+    },
+    {
+      "id": "e-draft",
+      "from": "survey",
+      "to": "draft",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-absent",
+      "from": "draft",
+      "to": "absent",
+      "label": "no API, no auth …",
+      "variant": "security",
+      "role": "branch"
+    },
+    {
+      "id": "e-backup",
+      "from": "draft",
+      "to": "backup",
+      "label": "existing pages",
+      "variant": "dashed"
+    },
+    {
+      "id": "e-write",
+      "from": "draft",
+      "to": "write",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-qa",
+      "from": "write",
+      "to": "qa",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e-nobrowser",
+      "from": "qa",
+      "to": "nobrowser",
+      "label": "no browser",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e-report",
+      "from": "qa",
+      "to": "report",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Read",
+      "items": [
+        "The agent surveys the tree and inventories docs/: missing, workdocs-managed (markers) or legacy",
+        "Every claim it will write is tied to a file it read"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Write",
+      "items": [
+        "Existing pages are backed up, then written; managed sections only; assets copied when absent",
+        "Diagrams, the animated flow and the step player are drawn from real call sites"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Verify",
+      "items": [
+        "docs/ is served alone: console, requests, both themes, 375 px, navigation, markers",
+        "Without a browser the static checks run and the rest is reported as unverified"
+      ]
+    }
+  ]
+}

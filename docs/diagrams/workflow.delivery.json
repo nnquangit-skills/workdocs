@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "dec1e17f-75cc-40a0-992c-22194193dff0",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/src/workflow.json",
+  "output": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/workflow.html",
+  "specification": {
+    "sha256": "26f9aff9c6861d7016e6506012920e4048df04aaaf0aa9e2ecfe514bbb6b7e10",
+    "bytes": 7577
+  },
+  "artifact": {
+    "sha256": "4eae2c985bd36d0f3e4f430cb9f8b1055663b8ce26119e338979c6a28edc9005",
+    "bytes": 762699
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "ccee7a76-5f28-499c-9d11-fb893f468938",
+  "status": "current",
+  "command": "deliver",
+  "type": "lifecycle",
+  "input": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/src/lifecycle.json",
+  "output": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/lifecycle.html",
+  "specification": {
+    "sha256": "dd56113aaae216634192b6d64f9284679b7dd91cb2f279dd14c1b1e61c539bec",
+    "bytes": 5064
+  },
+  "artifact": {
+    "sha256": "0d61cf8a1719d4fe2d851205a8145c0a02190595bfd5565e48f02c30461b638f",
+    "bytes": 759440
+  }
+}

@@ -45,7 +45,7 @@
         <tr><td>Six pages with managed sections, backups and migration</td><td><span class="wd-tag real">real</span></td><td><code>SKILL.md</code> "Run" and "Writing pages", <code>references/static.md</code>, <code>assets/page.html</code></td></tr>
         <tr><td>Animated flow and step player, self-running, no controls</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> (<code>startFlows</code>, <code>startStepPlayers</code>), <code>assets/snippets.html</code></td></tr>
         <tr><td>Light / dark toggle shared with the workmap page</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> key <code>docs-theme</code>; one-line script in <code>assets/page.html</code></td></tr>
-        <tr><td>Architecture diagrams through a diagram skill</td><td><span class="wd-tag partial">optional</span></td><td><code>references/dependencies.md</code>: archify or diagram-design when installed, otherwise inline SVG</td></tr>
+        <tr><td>Architecture, workflow, lifecycle and data-flow diagrams through a diagram skill</td><td><span class="wd-tag partial">optional</span></td><td><code>references/diagrams.md</code>: archify when installed (the frames on this site), diagram-design as the alternative, otherwise inline SVG for the architecture</td></tr>
         <tr><td>Video on How it works</td><td><span class="wd-tag partial">optional</span></td><td><code>SKILL.md</code> "Writing pages": only with a Remotion skill and on request</td></tr>
         <tr><td>Automated test suite for the skill</td><td><span class="wd-tag none">none</span></td><td>no test script in the repository; quality comes from the QA checklist the agent runs per project (<code>references/qa.md</code>)</td></tr>
       </tbody>
@@ -58,24 +58,14 @@
   <!-- workdocs:begin id=arch -->
   <section id="arch">
     <h2>Architecture</h2>
-    <figure>
-      <svg class="wd-diagram" viewBox="0 0 900 230" role="img" aria-label="The agent loads SKILL.md and its references, reads the project's files, copies the assets and writes six pages into docs/, which the reader opens in a browser.">
-        <path class="edge" d="M190 60 H330"/><path class="edge" d="M190 130 H330"/>
-        <path class="edge" d="M530 95 H610"/><path class="edge" d="M330 130 H270 V180 H330"/>
-        <path class="edge" d="M740 117 V150"/>
-        <rect class="box" x="30" y="30" width="160" height="56" rx="12"/><text x="110" y="52" text-anchor="middle">SKILL.md + references/</text><text class="muted" x="110" y="72" text-anchor="middle">rules, page standard, QA list</text>
-        <rect class="box" x="30" y="100" width="160" height="56" rx="12"/><text x="110" y="122" text-anchor="middle">Your project</text><text class="muted" x="110" y="142" text-anchor="middle">README, manifest, src, tests</text>
-        <rect class="box" x="330" y="40" width="200" height="110" rx="12"/><text x="430" y="70" text-anchor="middle">Agent</text><text class="muted" x="430" y="92" text-anchor="middle">survey · draft · back up · write</text><text class="muted" x="430" y="112" text-anchor="middle">QA · report</text>
-        <rect class="box" x="330" y="160" width="200" height="50" rx="12"/><text x="430" y="181" text-anchor="middle">assets/</text><text class="muted" x="430" y="199" text-anchor="middle">page.html, css, js, snippets</text>
-        <rect class="box" x="610" y="73" width="260" height="44" rx="12"/><text x="740" y="100" text-anchor="middle">docs/ · six static pages</text>
-        <rect class="box" x="610" y="150" width="260" height="44" rx="12"/><text x="740" y="177" text-anchor="middle">Reader's browser (file:// or any server)</text>
-      </svg>
-      <figcaption>Everything the reader needs ends up inside <code>docs/</code>; the skill itself stays in the agent's skills folder.</figcaption>
+    <figure class="wd-frame">
+      <iframe src="diagrams/architecture.html" title="Architecture diagram: you on the left, the skill files above the agent and your project below it, the assets, docs/ with its backups, the reader's browser and the optional archify skill on the right" loading="lazy" style="aspect-ratio: 1160 / 648"></iframe>
+      <figcaption>Hover a node to see its routes; the badge on a node lists the source lines it was drawn from. <a href="diagrams/architecture.html" target="_blank" rel="noopener">Open full screen ↗</a> · drawn from <code>SKILL.md</code> "Run", <code>references/static.md</code>, <code>assets/page.html</code>; source <code>diagrams/src/architecture.json</code>, rendered with archify (MIT).</figcaption>
     </figure>
     <ul>
-      <li><strong>The skill</strong>: <code>SKILL.md</code> (hard rules, the run, the work-map rule) and <code>references/</code> (what each page must contain, what "static" means, optional helpers, the QA checklist). The agent loads these when you say <code>workdocs</code>.</li>
+      <li><strong>The skill</strong>: <code>SKILL.md</code> (hard rules, the run, the work-map rule) and <code>references/</code> (what each page must contain, which diagram goes where, what "static" means, optional helpers, the QA checklist). The agent loads these when you say <code>workdocs</code>.</li>
       <li><strong>The assets</strong>: <code>assets/page.html</code> (page skeleton), <code>workdocs.css</code> (one look, light and dark), <code>workdocs.js</code> (theme toggle, copy buttons, the self-running animations) and <code>snippets.html</code> (the flow, the step player, the Work map card, the video block). Copied into <code>docs/assets/</code> once; never fetched.</li>
-      <li><strong>The output</strong>: six HTML files in <code>docs/</code> with the content embedded, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers and a line naming its sources.</li>
+      <li><strong>The output</strong>: six HTML files in <code>docs/</code> with the content embedded, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers and a line naming its sources; with archify installed, <code>docs/diagrams/</code> holds the self-contained diagram files shown in frames and <code>docs/diagrams/src/</code> their JSON sources.</li>
     </ul>
     <p class="wd-source">Source: <code>SKILL.md</code> "Run", <code>assets/</code>, <code>references/</code></p>
   </section>

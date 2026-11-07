@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "workdocs: what the agent reads and what it writes",
+    "output": "docs/diagrams/architecture.html",
+    "quality_profile": "showcase",
+    "repository": { "url": "git@github.com:nnquangit-skills/workdocs.git", "revision": "6cec3817724c6fd532e25005fa3860035347d504", "link_mode": "local-only" }
+  },
+  "components": [
+    { "id": "you", "type": "external", "label": "You", "sublabel": "say \"workdocs\" in the chat", "pos": [40, 300], "size": [150, 64],
+      "sources": [ { "path": "SKILL.md", "line": 3, "end_line": 9, "label": "trigger" } ] },
+    { "id": "skill", "type": "database", "label": "SKILL.md + references/", "sublabel": "rules, page standard, QA list", "pos": [320, 30], "size": [190, 60],
+      "sources": [ { "path": "SKILL.md", "line": 34, "end_line": 54, "label": "hard rules, run" }, { "path": "references/pages.md", "line": 1, "end_line": 12, "label": "page standard" }, { "path": "references/qa.md", "line": 1, "end_line": 6, "label": "QA" } ] },
+    { "id": "agent", "type": "backend", "label": "Agent", "sublabel": "survey · draft · back up · write · QA", "tag": "Claude Code or any Agent Skills host", "pos": [320, 300], "size": [190, 64],
+      "sources": [ { "path": "SKILL.md", "line": 45, "end_line": 54, "label": "the eight steps" } ] },
+    { "id": "project", "type": "database", "label": "Your project", "sublabel": "README, manifest, src, tests", "tag": "read only", "pos": [320, 470], "size": [190, 60],
+      "sources": [ { "path": "SKILL.md", "line": 47, "end_line": 47, "label": "survey" }, { "path": "SKILL.md", "line": 36, "end_line": 36, "label": "evidence first" } ] },
+    { "id": "assets", "type": "frontend", "label": "assets/", "sublabel": "page.html, css, js, snippets", "pos": [560, 470], "size": [190, 60],
+      "sources": [ { "path": "SKILL.md", "line": 51, "end_line": 51, "label": "copied once" }, { "path": "assets/page.html", "line": 1, "end_line": 45, "label": "skeleton" } ] },
+    { "id": "docs", "type": "frontend", "label": "docs/ · six pages", "sublabel": "content embedded, markers", "tag": "+ docs/diagrams/", "pos": [660, 300], "size": [190, 64],
+      "sources": [ { "path": "SKILL.md", "line": 51, "end_line": 52, "label": "write, diagrams" }, { "path": "references/static.md", "line": 3, "end_line": 13, "label": "static" } ] },
+    { "id": "backup", "type": "database", "label": "docs/.workdocs-backup/", "sublabel": "replaced pages, checksummed", "pos": [660, 30], "size": [190, 60],
+      "sources": [ { "path": "references/static.md", "line": 22, "end_line": 24, "label": "back up first" } ] },
+    { "id": "reader", "type": "external", "label": "Reader's browser", "sublabel": "file:// or any static server", "pos": [960, 300], "size": [160, 64],
+      "sources": [ { "path": "references/static.md", "line": 10, "end_line": 11, "label": "file://, theme" } ] },
+    { "id": "archify", "type": "cloud", "label": "archify (optional)", "sublabel": "diagram skill, when installed", "pos": [960, 470], "size": [160, 60],
+      "sources": [ { "path": "references/dependencies.md", "line": 10, "end_line": 11, "label": "optional" }, { "path": "references/diagrams.md", "line": 18, "end_line": 25, "label": "how it is used" } ] }
+  ],
+  "connections": [
+    { "id": "you-agent", "from": "you", "to": "agent", "label": "one word", "variant": "emphasis" },
+    { "id": "skill-agent", "from": "skill", "to": "agent", "label": "loaded as instructions", "variant": "security" },
+    { "id": "agent-project", "from": "agent", "to": "project", "label": "reads", "variant": "emphasis" },
+    { "id": "assets-docs", "from": "assets", "to": "docs", "label": "copied to docs/assets/", "variant": "dashed" },
+    { "id": "agent-docs", "from": "agent", "to": "docs", "label": "writes", "variant": "emphasis" },
+    { "id": "docs-backup", "from": "docs", "to": "backup", "label": "before replacing", "variant": "dashed" },
+    { "id": "docs-reader", "from": "docs", "to": "reader", "label": "opens", "variant": "emphasis" },
+    { "id": "archify-docs", "from": "archify", "to": "docs", "label": "diagram files", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "In", "items": [ "SKILL.md and references/ are loaded when you say workdocs; they are instructions, not code", "The agent reads README, manifest, entry points, handlers, config and tests; it never writes there" ] },
+    { "dot": "emerald", "title": "Out", "items": [ "Six static pages in docs/ with the content embedded between workdocs:begin / end markers", "docs/assets/ is copied once; replaced pages go to docs/.workdocs-backup/ first" ] },
+    { "dot": "slate", "title": "Optional", "items": [ "With archify installed, docs/diagrams/ gets self-contained diagram files; their sources stay in docs/diagrams/src/", "The reader needs nothing: no server, no network, no JavaScript" ] }
+  ]
+}

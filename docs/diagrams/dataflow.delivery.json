@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "901d592a-3476-4d4d-b560-25252d630451",
+  "status": "current",
+  "command": "deliver",
+  "type": "dataflow",
+  "input": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/src/dataflow.json",
+  "output": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/dataflow.html",
+  "specification": {
+    "sha256": "781b428a49223fd6f5b585f119bdbf20adf1c8f9c433bda2c9b619ebd9550215",
+    "bytes": 6455
+  },
+  "artifact": {
+    "sha256": "9c37cd82f96495e00f876ac665678304941e613cdf3e04c104dc903557a02928",
+    "bytes": 758946
+  }
+}

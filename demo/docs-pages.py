@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Writes the six workdocs pages about the workdocs skill itself into docs/ (run from the repo root).
 Content was written from SKILL.md, assets/, references/, scripts/package.sh and CHANGELOG.md; update the text here
-when those change, then run this script. docs/ is not part of the skill package."""
-import pathlib
+when those change, then run this script. docs/ is not part of the skill package.
+The diagram frames read docs/diagrams/<name>.html (archify output; sources in docs/diagrams/src/, regenerate with
+node <archify>/bin/archify.mjs finalize <type> docs/diagrams/src/<name>.json docs/diagrams/<name>.html --repo-root . --quality showcase --json --out-dir <scratch>)."""
+import pathlib, re
 OUT = pathlib.Path("docs")
 DATE = "2026-11-07"
 NAV = [("index.html", "Overview"), ("setup.html", "Setup"), ("how-it-works.html", "How it works"),
@@ -59,25 +61,24 @@ def sec(id_, title, inner, source, cls=""):
 
 C = lambda s: f"<code>{s}</code>"
 
-# ---------------------------------------------------------------- Overview
-arch = '''    <figure>
-      <svg class="wd-diagram" viewBox="0 0 900 230" role="img" aria-label="The agent loads SKILL.md and its references, reads the project's files, copies the assets and writes six pages into docs/, which the reader opens in a browser.">
-        <path class="edge" d="M190 60 H330"/><path class="edge" d="M190 130 H330"/>
-        <path class="edge" d="M530 95 H610"/><path class="edge" d="M330 130 H270 V180 H330"/>
-        <path class="edge" d="M740 117 V150"/>
-        <rect class="box" x="30" y="30" width="160" height="56" rx="12"/><text x="110" y="52" text-anchor="middle">SKILL.md + references/</text><text class="muted" x="110" y="72" text-anchor="middle">rules, page standard, QA list</text>
-        <rect class="box" x="30" y="100" width="160" height="56" rx="12"/><text x="110" y="122" text-anchor="middle">Your project</text><text class="muted" x="110" y="142" text-anchor="middle">README, manifest, src, tests</text>
-        <rect class="box" x="330" y="40" width="200" height="110" rx="12"/><text x="430" y="70" text-anchor="middle">Agent</text><text class="muted" x="430" y="92" text-anchor="middle">survey · draft · back up · write</text><text class="muted" x="430" y="112" text-anchor="middle">QA · report</text>
-        <rect class="box" x="330" y="160" width="200" height="50" rx="12"/><text x="430" y="181" text-anchor="middle">assets/</text><text class="muted" x="430" y="199" text-anchor="middle">page.html, css, js, snippets</text>
-        <rect class="box" x="610" y="73" width="260" height="44" rx="12"/><text x="740" y="100" text-anchor="middle">docs/ · six static pages</text>
-        <rect class="box" x="610" y="150" width="260" height="44" rx="12"/><text x="740" y="177" text-anchor="middle">Reader's browser (file:// or any server)</text>
-      </svg>
-      <figcaption>Everything the reader needs ends up inside <code>docs/</code>; the skill itself stays in the agent's skills folder.</figcaption>
+def frame(name, title, caption, drawn_from):
+    """Diagram frame (workdocs snippet 6): the self-contained file in diagrams/, aspect ratio from its viewBox + legend room."""
+    html = (OUT / "diagrams" / f"{name}.html").read_text(encoding="utf-8")
+    m = re.search(r'viewBox="0 0 ([0-9.]+) ([0-9.]+)"', html)
+    w, h = (float(m.group(1)), float(m.group(2))) if m else (16.0, 9.0)
+    return f'''    <figure class="wd-frame">
+      <iframe src="diagrams/{name}.html" title="{title}" loading="lazy" style="aspect-ratio: {w:g} / {h + 50:g}"></iframe>
+      <figcaption>{caption} <a href="diagrams/{name}.html" target="_blank" rel="noopener">Open full screen ↗</a> · drawn from {drawn_from}; source <code>diagrams/src/{name}.json</code>, rendered with archify (MIT).</figcaption>
     </figure>
-    <ul>
-      <li><strong>The skill</strong>: <code>SKILL.md</code> (hard rules, the run, the work-map rule) and <code>references/</code> (what each page must contain, what "static" means, optional helpers, the QA checklist). The agent loads these when you say <code>workdocs</code>.</li>
+'''
+
+# ---------------------------------------------------------------- Overview
+arch = frame("architecture", "Architecture diagram: you on the left, the skill files above the agent and your project below it, the assets, docs/ with its backups, the reader's browser and the optional archify skill on the right",
+             "Hover a node to see its routes; the badge on a node lists the source lines it was drawn from.",
+             f'{C("SKILL.md")} "Run", {C("references/static.md")}, {C("assets/page.html")}') + '''    <ul>
+      <li><strong>The skill</strong>: <code>SKILL.md</code> (hard rules, the run, the work-map rule) and <code>references/</code> (what each page must contain, which diagram goes where, what "static" means, optional helpers, the QA checklist). The agent loads these when you say <code>workdocs</code>.</li>
       <li><strong>The assets</strong>: <code>assets/page.html</code> (page skeleton), <code>workdocs.css</code> (one look, light and dark), <code>workdocs.js</code> (theme toggle, copy buttons, the self-running animations) and <code>snippets.html</code> (the flow, the step player, the Work map card, the video block). Copied into <code>docs/assets/</code> once; never fetched.</li>
-      <li><strong>The output</strong>: six HTML files in <code>docs/</code> with the content embedded, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers and a line naming its sources.</li>
+      <li><strong>The output</strong>: six HTML files in <code>docs/</code> with the content embedded, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers and a line naming its sources; with archify installed, <code>docs/diagrams/</code> holds the self-contained diagram files shown in frames and <code>docs/diagrams/src/</code> their JSON sources.</li>
     </ul>'''
 over = (
     sec("what", "What it is",
@@ -91,7 +92,7 @@ over = (
         <tr><td>Six pages with managed sections, backups and migration</td><td><span class="wd-tag real">real</span></td><td><code>SKILL.md</code> "Run" and "Writing pages", <code>references/static.md</code>, <code>assets/page.html</code></td></tr>
         <tr><td>Animated flow and step player, self-running, no controls</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> (<code>startFlows</code>, <code>startStepPlayers</code>), <code>assets/snippets.html</code></td></tr>
         <tr><td>Light / dark toggle shared with the workmap page</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> key <code>docs-theme</code>; one-line script in <code>assets/page.html</code></td></tr>
-        <tr><td>Architecture diagrams through a diagram skill</td><td><span class="wd-tag partial">optional</span></td><td><code>references/dependencies.md</code>: archify or diagram-design when installed, otherwise inline SVG</td></tr>
+        <tr><td>Architecture, workflow, lifecycle and data-flow diagrams through a diagram skill</td><td><span class="wd-tag partial">optional</span></td><td><code>references/diagrams.md</code>: archify when installed (the frames on this site), diagram-design as the alternative, otherwise inline SVG for the architecture</td></tr>
         <tr><td>Video on How it works</td><td><span class="wd-tag partial">optional</span></td><td><code>SKILL.md</code> "Writing pages": only with a Remotion skill and on request</td></tr>
         <tr><td>Automated test suite for the skill</td><td><span class="wd-tag none">none</span></td><td>no test script in the repository; quality comes from the QA checklist the agent runs per project (<code>references/qa.md</code>)</td></tr>
       </tbody>
@@ -214,18 +215,31 @@ steps = '''    <p>One run of workdocs on a project, in the order <code>SKILL.md<
 how = (
     sec("flow", "Big picture", flow, f'{C("SKILL.md")} "Run", {C("assets/")}', cls="wd-flow playing"),
     sec("steps", "Step by step", steps, f'{C("SKILL.md")} "Run" steps 1-8 and "Hard rules", {C("references/static.md")}, {C("references/qa.md")}'),
+    sec("process", "Process",
+        '''    <p>The same run seen as lanes and gates. You say one word; the agent surveys the tree and inventories <code>docs/</code>, drafts the six pages with a claim-to-source list, backs up what it will replace, writes the pages, their frames and the assets, serves <code>docs/</code> alone for QA and reports. The bottom lane holds the gates that stop invention: every claim needs a file (hard rule 1); a page that does not apply says what is absent instead of inventing an API or a setup step (hard rules 4 and 5); without a browser the static checks run and the rest is reported as unverified (step 7).</p>
+''' + frame("workflow", "Workflow diagram: you say workdocs; the agent surveys and inventories, drafts six pages, backs up and writes, runs QA and reports; a gates lane shows evidence first, the not-applicable rule and the no-browser branch",
+            "Lanes are who acts; the red lane is where the run refuses to guess.",
+            f'{C("SKILL.md")} "Hard rules" and "Run", {C("references/qa.md")}'),
+        f'{C("SKILL.md")} "Hard rules" 1, 4, 5 and "Run" steps 1-8, {C("references/qa.md")}'),
+    sec("states", "States",
+        '''    <p>What happens to one page over time. A missing page is written on the first run, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers. When the code moves on, the next run regenerates only the sections whose sources changed and backs the old file up first. A page found on disk that was written by hand or loads markdown at open time is backed up in full (checksum confirmed) and then migrated, carrying its unique details forward. A section you mark <code>data-workdocs="keep"</code> is never regenerated, and text outside the markers is left alone.</p>
+''' + frame("lifecycle", "Lifecycle diagram: missing, written, sources changed, regenerated on the main row; a legacy page is backed up and migrated on the second row; a kept section sits on the third row",
+            "The middle row is a page found on disk; the bottom one a section you marked keep.",
+            f'{C("SKILL.md")} "Writing pages", {C("references/static.md")} "Migrating legacy pages", {C("assets/page.html")}'),
+        f'{C("SKILL.md")} "Writing pages" and hard rule 6, {C("references/static.md")} "Migrating legacy pages"'),
     sec("components", "Key components",
         '''    <div class="wd-table"><table>
       <thead><tr><th>Component</th><th>Responsibility</th><th>File</th></tr></thead>
       <tbody>
         <tr><td>Skill instructions</td><td>Hard rules, the eight-step run, how to write pages, the work-map rule, what "done" means</td><td><code>SKILL.md</code></td></tr>
         <tr><td>Page standard</td><td>Required sections and section ids per page, mistakes to avoid</td><td><code>references/pages.md</code></td></tr>
+        <tr><td>Diagram rules</td><td>Which diagram answers which question and where it goes; archify files, frames, attribution, QA</td><td><code>references/diagrams.md</code></td></tr>
         <tr><td>Static rules and migration</td><td>What a page may load, what is forbidden, how legacy pages are backed up and migrated</td><td><code>references/static.md</code></td></tr>
         <tr><td>Optional helpers</td><td>Which skills improve a step and the fallback when missing</td><td><code>references/dependencies.md</code></td></tr>
         <tr><td>QA checklist</td><td>Per-page, static-delivery, static and honesty checks</td><td><code>references/qa.md</code></td></tr>
         <tr><td>Page skeleton</td><td>Nav, hero, one managed section, footer, theme script</td><td><code>assets/page.html</code></td></tr>
         <tr><td>Look</td><td>Tokens (<code>--wd-*</code>), light and dark, cards, tables, tags, diagram and stage styles</td><td><code>assets/workdocs.css</code></td></tr>
-        <tr><td>Presentation script</td><td><code>addToggle</code>, <code>addCopyButtons</code>, <code>startFlows</code>, <code>startStepPlayers</code>; never inserts content</td><td><code>assets/workdocs.js</code></td></tr>
+        <tr><td>Presentation script</td><td><code>addToggle</code>, <code>addCopyButtons</code>, <code>startFlows</code>, <code>startStepPlayers</code>, <code>syncFrames</code>; never inserts content</td><td><code>assets/workdocs.js</code></td></tr>
         <tr><td>Snippets</td><td>Flow, step player, Work map cards, nav entry, video block to copy and adapt</td><td><code>assets/snippets.html</code></td></tr>
         <tr><td>Packaging</td><td>Builds <code>dist/workdocs-&lt;version&gt;.zip</code> with one top-level folder</td><td><code>scripts/package.sh</code></td></tr>
       </tbody>
@@ -244,7 +258,7 @@ how = (
         f'{C("assets/snippets.html")} header comment, {C("references/static.md")}'),
 )
 page("how-it-works.html", "How it works", "One word in the chat becomes six pages in docs/, in eight steps the skill prescribes and the agent reports on.", how,
-     "SKILL.md, references/, assets/")
+     "SKILL.md, references/, assets/, docs/diagrams/src/")
 
 # ---------------------------------------------------------------- Security
 security = (
@@ -254,7 +268,10 @@ security = (
       <li><strong>What the agent writes</strong>: files inside <code>docs/</code> only: the six pages, <code>docs/assets/</code>, and backups under <code>docs/.workdocs-backup/</code>. Nothing outside the project.</li>
       <li><strong>What the reader runs</strong>: static HTML with one small script for presentation. No fetch, no XHR, no WebSocket, no dynamic import, no web font, no CDN, no analytics, no external images (<code>references/static.md</code>, "Forbidden").</li>
       <li><strong>Trust boundary</strong>: the published docs may be public. Whatever the agent writes into them leaves the repository's access control.</li>
-    </ul>''', f'{C("SKILL.md")} Hard rules 2 and 7, {C("references/static.md")}'),
+    </ul>
+''' + frame("dataflow", "Data-flow diagram: README and manifest, code and tests, and configuration on the left feed the evidence list; the six pages pass a secret check and a network check before docs/ is published to anyone who has it",
+            "The red flows are where a secret could leak and the two checks that stand in the way.",
+            f'{C("SKILL.md")} hard rule 7, {C("references/static.md")} "Forbidden", {C("references/qa.md")}') + '''''', f'{C("SKILL.md")} Hard rules 2 and 7, {C("references/static.md")}, {C("references/qa.md")}'),
     sec("threats", "Threats and controls",
         '''    <div class="wd-table"><table>
       <thead><tr><th>Threat</th><th>Control</th><th>Where</th><th>Status</th></tr></thead>
@@ -299,6 +316,7 @@ api = (
         <tr><td><code>data-workdocs="promo"</code></td><td>The Work map pointer card, easy to find and remove</td><td>on the card in the Pages section</td><td><code>SKILL.md</code> "Work map", <code>assets/snippets.html</code></td></tr>
         <tr><td><code>section.wd-flow.playing</code> + <code>svg.wd-diagram</code> with <code>.wire</code> / <code>.packet</code></td><td>Animated flow; packets follow wires with <code>animateMotion</code></td><td>wires have ids, packets reference them with <code>mpath</code></td><td><code>assets/snippets.html</code>, <code>assets/workdocs.js:startFlows</code></td></tr>
         <tr><td><code>ol.wd-steps[data-player]</code></td><td>Step player; the diagram is drawn above the list</td><td><code>data-lanes="id=Label|subtitle;…"</code>, per item <code>data-from</code>, <code>data-to</code>, <code>data-label</code>, <code>data-kind="ret"</code></td><td><code>assets/snippets.html</code>, <code>assets/workdocs.js:startStepPlayers</code></td></tr>
+        <tr><td><code>figure.wd-frame</code> + <code>iframe</code></td><td>Diagram frame: a self-contained diagram file from <code>docs/diagrams/</code>; the script adds <code>?embed=1</code> and the chosen theme</td><td><code>style="aspect-ratio: W / H"</code> from the drawing's viewBox; caption with the full-screen link</td><td><code>assets/snippets.html</code> block 6, <code>assets/workdocs.js:syncFrames</code>, <code>references/diagrams.md</code></td></tr>
         <tr><td><code>.wd-tag</code> with <code>real</code>, <code>mock</code>, <code>partial</code>, <code>none</code></td><td>Status tags in tables</td><td>class names</td><td><code>assets/workdocs.css</code></td></tr>
         <tr><td><code>.wd-note</code>, <code>.wd-source</code>, <code>.wd-cards</code> / <code>.wd-card</code>, <code>.wd-table</code>, <code>.wd-diagram</code></td><td>Note box, source line, card grid, scrolling table, diagram frame</td><td>class names</td><td><code>assets/workdocs.css</code></td></tr>
         <tr><td><code>--wd-bg</code>, <code>--wd-panel</code>, <code>--wd-fg</code>, <code>--wd-accent</code>, …</td><td>Theme tokens; redefine them to re-brand</td><td>CSS custom properties on <code>:root</code>, dark values under <code>prefers-color-scheme</code> and <code>html[data-theme="dark"]</code></td><td><code>assets/workdocs.css</code></td></tr>

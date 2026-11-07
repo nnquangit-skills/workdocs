@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "c691897b-5779-435f-bc70-9c40c442d8e2",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/src/architecture.json",
+  "output": "/Users/nnquangit/projects/private/skills/workdocs/docs/diagrams/architecture.html",
+  "specification": {
+    "sha256": "fb2d56dab86c1d8bc59b4909f2992a3cc4a99d043a0d5fbdffcde74ac160a691",
+    "bytes": 4912
+  },
+  "artifact": {
+    "sha256": "6b0cd3befa8c4537c3d203045f044a693ed718682c40b36c674b6a9fe69af561",
+    "bytes": 763439
+  }
+}

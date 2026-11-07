@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "From your files to a public page",
+    "output": "docs/diagrams/dataflow.html",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1070,
+      560
+    ],
+    "repository": {
+      "url": "git@github.com:nnquangit-skills/workdocs.git",
+      "revision": "6cec3817724c6fd532e25005fa3860035347d504",
+      "link_mode": "local-only"
+    }
+  },
+  "stages": [
+    {
+      "label": "Your repository"
+    },
+    {
+      "label": "Read"
+    },
+    {
+      "label": "Written"
+    },
+    {
+      "label": "Checked"
+    },
+    {
+      "label": "Published"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "readme",
+      "type": "database",
+      "label": "README, manifest",
+      "sublabel": "names, versions, scripts",
+      "stage": 0,
+      "row": 0,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 47,
+          "end_line": 47,
+          "label": "survey"
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "type": "database",
+      "label": "Code and tests",
+      "sublabel": "what really runs",
+      "stage": 0,
+      "row": 1,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 47,
+          "end_line": 47,
+          "label": "survey"
+        }
+      ]
+    },
+    {
+      "id": "env",
+      "type": "security",
+      "label": ".env, config",
+      "sublabel": "variable names only",
+      "stage": 0,
+      "row": 2,
+      "tag": "values never copied",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 42,
+          "end_line": 42,
+          "label": "hard rule 7"
+        },
+        {
+          "path": "references/pages.md",
+          "line": 28,
+          "end_line": 28,
+          "label": "configuration"
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "type": "backend",
+      "label": "Evidence list",
+      "sublabel": "claim → file",
+      "stage": 1,
+      "row": 1,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 50,
+          "end_line": 50,
+          "label": "step 4"
+        }
+      ]
+    },
+    {
+      "id": "pages",
+      "type": "frontend",
+      "label": "Six pages",
+      "sublabel": "content embedded",
+      "stage": 2,
+      "row": 1,
+      "tag": "Source: line per section",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 51,
+          "end_line": 51,
+          "label": "step 5"
+        },
+        {
+          "path": "assets/page.html",
+          "line": 32,
+          "end_line": 38,
+          "label": "section + source line"
+        }
+      ]
+    },
+    {
+      "id": "grep",
+      "type": "security",
+      "label": "Key-shaped strings",
+      "sublabel": "sk-, AKIA, BEGIN …",
+      "stage": 3,
+      "row": 0,
+      "tag": "net, not guarantee",
+      "sources": [
+        {
+          "path": "references/qa.md",
+          "line": 34,
+          "end_line": 34,
+          "label": "grep"
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "type": "security",
+      "label": "No fetch, no CDN",
+      "sublabel": "network log, loaders",
+      "stage": 3,
+      "row": 2,
+      "sources": [
+        {
+          "path": "references/static.md",
+          "line": 15,
+          "end_line": 20,
+          "label": "forbidden"
+        },
+        {
+          "path": "references/qa.md",
+          "line": 9,
+          "end_line": 10,
+          "label": "per page"
+        }
+      ]
+    },
+    {
+      "id": "public",
+      "type": "external",
+      "label": "Anyone with docs/",
+      "sublabel": "repository or hosting",
+      "stage": 4,
+      "row": 1,
+      "tag": "outside access control",
+      "sources": [
+        {
+          "path": "references/static.md",
+          "line": 10,
+          "end_line": 10,
+          "label": "served alone"
+        }
+      ]
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-readme",
+      "from": "readme",
+      "to": "evidence",
+      "label": "facts",
+      "classification": "names, numbers",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "top",
+      "via": [
+        [
+          315,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f-code",
+      "from": "code",
+      "to": "evidence",
+      "label": "behaviour",
+      "classification": "call sites",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-env",
+      "from": "env",
+      "to": "evidence",
+      "label": "variable names",
+      "classification": "no values",
+      "variant": "security",
+      "fromSide": "right",
+      "toSide": "bottom",
+      "via": [
+        [
+          315,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f-pages",
+      "from": "evidence",
+      "to": "pages",
+      "label": "sections",
+      "classification": "with Source: lines",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-grep",
+      "from": "pages",
+      "to": "grep",
+      "label": "pages",
+      "classification": "secret check",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "left",
+      "via": [
+        [
+          530,
+          157
+        ]
+      ]
+    },
+    {
+      "id": "f-network",
+      "from": "pages",
+      "to": "network",
+      "label": "pages",
+      "classification": "static check",
+      "variant": "security",
+      "fromSide": "bottom",
+      "toSide": "left",
+      "via": [
+        [
+          530,
+          385
+        ]
+      ]
+    },
+    {
+      "id": "f-public",
+      "from": "pages",
+      "to": "public",
+      "label": "docs/",
+      "classification": "may be public",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "What crosses the boundary",
+      "items": [
+        "Facts from README, manifest, code and tests, each tied to the file it came from",
+        "From configuration only variable names, purposes and defaults; never a value from .env"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "What stops at it",
+      "items": [
+        "Secrets: hard rule 7 plus a grep for key-shaped strings before the report",
+        "Anything a page would load at open time: no fetch, XHR, CDN, web font or analytics"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "What nothing enforces",
+      "items": [
+        "Every control is an instruction to the agent or a check it runs on itself",
+        "Once docs/ is published, access control is the repository's or the host's"
+      ]
+    }
+  ]
+}

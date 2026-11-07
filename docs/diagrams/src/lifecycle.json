@@ -1,0 +1,231 @@
+{
+  "schema_version": 2,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "A documentation page across runs",
+    "output": "docs/diagrams/lifecycle.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "git@github.com:nnquangit-skills/workdocs.git",
+      "revision": "6cec3817724c6fd532e25005fa3860035347d504",
+      "link_mode": "local-only"
+    }
+  },
+  "lanes": [
+    {
+      "id": "main",
+      "label": "Managed page"
+    },
+    {
+      "id": "legacy",
+      "label": "Found on disk"
+    },
+    {
+      "id": "kept",
+      "label": "Your edits"
+    }
+  ],
+  "states": [
+    {
+      "id": "missing",
+      "type": "start",
+      "label": "Missing",
+      "sublabel": "no file in docs/",
+      "lane": "main",
+      "col": 0,
+      "step": "01",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 48,
+          "end_line": 48,
+          "label": "inventory"
+        }
+      ]
+    },
+    {
+      "id": "written",
+      "type": "active",
+      "label": "Written",
+      "sublabel": "sections between markers",
+      "lane": "main",
+      "col": 1,
+      "step": "02",
+      "tag": "workdocs:begin / end",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 58,
+          "end_line": 58,
+          "label": "markers"
+        },
+        {
+          "path": "assets/page.html",
+          "line": 32,
+          "end_line": 38,
+          "label": "a managed section"
+        }
+      ]
+    },
+    {
+      "id": "stale",
+      "type": "waiting",
+      "label": "Sources changed",
+      "sublabel": "code moved on",
+      "lane": "main",
+      "col": 2,
+      "step": "03",
+      "sources": [
+        {
+          "path": "references/static.md",
+          "line": 13,
+          "end_line": 13,
+          "label": "re-run"
+        }
+      ]
+    },
+    {
+      "id": "refreshed",
+      "type": "success",
+      "label": "Regenerated",
+      "sublabel": "only changed sections",
+      "lane": "main",
+      "col": 3,
+      "step": "04",
+      "tag": "old copy backed up",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 62,
+          "end_line": 62,
+          "label": "managed pages"
+        },
+        {
+          "path": "SKILL.md",
+          "line": 41,
+          "end_line": 41,
+          "label": "hard rule 6"
+        }
+      ]
+    },
+    {
+      "id": "legacy",
+      "type": "external",
+      "label": "Legacy page",
+      "sublabel": "foreign or loads markdown",
+      "lane": "legacy",
+      "col": 0,
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 48,
+          "end_line": 48,
+          "label": "inventory"
+        },
+        {
+          "path": "references/static.md",
+          "line": 22,
+          "end_line": 30,
+          "label": "migration"
+        }
+      ]
+    },
+    {
+      "id": "backedup",
+      "type": "neutral",
+      "label": "Backed up",
+      "sublabel": "docs/.workdocs-backup/",
+      "lane": "legacy",
+      "col": 1,
+      "sources": [
+        {
+          "path": "references/static.md",
+          "line": 24,
+          "end_line": 24,
+          "label": "step 1"
+        }
+      ],
+      "tag": "checksum confirmed"
+    },
+    {
+      "id": "keep",
+      "type": "neutral",
+      "label": "Kept",
+      "sublabel": "data-workdocs=\"keep\"",
+      "lane": "kept",
+      "col": 2,
+      "tag": "never regenerated",
+      "sources": [
+        {
+          "path": "SKILL.md",
+          "line": 62,
+          "end_line": 62,
+          "label": "keep"
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "from": "missing",
+      "to": "written",
+      "label": "first run",
+      "variant": "emphasis"
+    },
+    {
+      "from": "written",
+      "to": "stale",
+      "label": "you change the code",
+      "variant": "dashed"
+    },
+    {
+      "from": "stale",
+      "to": "refreshed",
+      "label": "run again",
+      "variant": "emphasis"
+    },
+    {
+      "from": "legacy",
+      "to": "backedup",
+      "label": "before any edit",
+      "variant": "security"
+    },
+    {
+      "from": "backedup",
+      "to": "written",
+      "label": "migrated, details carried forward"
+    },
+    {
+      "from": "written",
+      "to": "keep",
+      "label": "you mark a section",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Managed",
+      "items": [
+        "Each section sits between workdocs:begin and workdocs:end markers with its own id",
+        "A later run regenerates only the sections whose sources changed"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Legacy",
+      "items": [
+        "A page that loads markdown at open time, or was written by hand, is backed up in full (checksum confirmed) before it is migrated",
+        "Unique, accurate details are carried forward; stale claims are dropped"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Yours",
+      "items": [
+        "A section marked data-workdocs=\"keep\" is never touched again",
+        "Text outside the markers is left alone"
+      ]
+    }
+  ]
+}
