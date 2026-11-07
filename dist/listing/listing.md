@@ -8,13 +8,13 @@ workdocs - six honest documentation pages, written from the code
 
 ## Tagline (one line)
 
-Free. Your agent writes Overview, Setup, How it works, Security, API and a Demo script as static HTML, every claim traced to a file it actually read, with self-running animated flows. Pairs with workmap.
+Free. Your agent reads the code and writes Overview, Setup, How it works, Security, API and a Demo script as static HTML, each section naming the files it came from, with self-running animated flows. Pairs with workmap.
 
 ## Description
 
-Most project docs are missing, stale, or written from memory. **workdocs** makes the agent read first and write only what it can point at.
+Documentation written from the code, not from memory.
 
-Say `workdocs` in a project and the agent reads the manifest, entry points, handlers, config and tests, then writes six reader-facing pages in `docs/`:
+Most project docs are missing, stale, or written from memory. **workdocs** puts the job on the agent. Say `workdocs` in a project and it reads the manifest, entry points, handlers, config and tests, then writes six reader-facing pages in `docs/`:
 
 - **Overview** - what it is, status (real vs mocked), architecture, quick start
 - **Setup** - prerequisites, install, configuration, run, test, verify, troubleshooting
@@ -23,11 +23,12 @@ Say `workdocs` in a project and the agent reads the manifest, entry points, hand
 - **API** - endpoints or commands, shapes, errors, try it
 - **Demo script** - a presenter's script with fallbacks and cleanup
 
+Each section names the files it came from. If a page does not apply, it says what is absent and what exists instead. Mocked, simulated and flag-dependent behaviour is labelled wherever it appears.
+
 ## What makes it different
 
-- **Evidence first.** Versions, ports, commands, endpoints and guarantees come from the repository, never from memory. Each section names its sources. If a page does not apply, it says what is absent and what exists instead.
-- **Static and honest.** Content is embedded when the page is written. An opened page fetches nothing, works from `file://`, and stays readable with JavaScript off. Mock, simulated and flag-dependent behaviour is labelled wherever it appears.
-- **Motion that explains, nothing to click.** The flow and the sequence diagram run on their own and stop under reduced motion. Pure CSS and SVG, no framework, no build step.
+- **Static.** Content is embedded when the page is written. An opened page fetches nothing, works from `file://` and stays readable with JavaScript off.
+- **Motion with nothing to click.** On How it works, an animated flow shows the real calls between the real components and a sequence diagram walks one request through its steps on its own. Both stop under reduced motion. CSS and SVG only; no framework, no build step.
 - **One look.** A pale map-paper background, one reading column, pill navigation, every section a card, light and dark with one toggle.
 - **Safe updates.** Managed sections carry markers; a later run regenerates only what changed, backs up what it replaces and keeps what you wrote by hand. Legacy pages are migrated, not deleted.
 
