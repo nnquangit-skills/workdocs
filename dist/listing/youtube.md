@@ -10,7 +10,7 @@ workdocs - six honest documentation pages, written by your AI agent from the cod
 
 Most project docs are missing, stale, or written from memory. workdocs is a free Agent Skill for Claude Code (and any agent that supports SKILL.md): say "workdocs" in a project and the agent reads the manifest, entry points, handlers, config and tests, then writes six static HTML pages in docs/ - Overview, Setup, How it works, Security, API and a Demo script. Every claim points at a file it actually read; mocked parts are labelled; the pages open from a folder, fetch nothing, and the animated flow and the sequence diagram run on their own.
 
-Get workdocs (free): https://www.agensi.io/skills/workdocs
+Get workdocs (free): <Agensi listing link - paste it once the listing is approved>
 Source: https://github.com/nnquangit-skills/workdocs
 
 Pairs with workmap - a live map of Epics → Features → Tasks → Subtasks with status and owner on every node, kept up to date by the agents that do the work:
