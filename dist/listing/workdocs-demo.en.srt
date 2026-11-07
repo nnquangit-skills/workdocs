@@ -1,39 +1,39 @@
 1
-00:00:00,000 --> 00:00:03,717
+00:00:00,000 --> 00:00:03,716
 Documentation written from the code, not from memory.
 
 2
-00:00:03,767 --> 00:00:06,986
+00:00:03,766 --> 00:00:06,985
 With workdocs you type one command: /workdocs.
 
 3
-00:00:07,036 --> 00:00:12,317
+00:00:07,035 --> 00:00:12,315
 The agent reads the manifest, the entry points, the handlers and the tests,
 
 4
-00:00:12,367 --> 00:00:18,500
+00:00:12,365 --> 00:00:18,497
 then writes six pages: Overview, Setup, How it works, Security, API, and a demo script.
 
 5
-00:00:18,700 --> 00:00:21,816
+00:00:18,700 --> 00:00:21,776
 The result is plain static HTML in your docs folder.
 
 6
-00:00:21,866 --> 00:00:25,225
-Every claim points at a file; mocked parts are labelled.
+00:00:21,826 --> 00:00:25,924
+Each section names the files it came from; mocked parts are labelled.
 
 7
-00:00:25,275 --> 00:00:32,226
+00:00:25,974 --> 00:00:32,837
 How it works shows the real calls as an animated flow, and walks one request through a sequence diagram on its own.
 
 8
-00:00:32,276 --> 00:00:36,000
+00:00:32,887 --> 00:00:36,565
 Nothing to click, nothing to fetch. It even opens from a file.
 
 9
-00:00:36,200 --> 00:00:37,170
+00:00:36,800 --> 00:00:37,791
 workdocs. Free.
 
 10
-00:00:37,220 --> 00:00:42,200
-And it pairs with workmap, so documentation and progress read as one site.
+00:00:37,841 --> 00:00:42,650
+It pairs with workmap, so documentation and progress read as one site.

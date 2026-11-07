@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Setup · workdocs</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">workdocs docs</a>
+    <a class="wd-link" href="index.html">Overview</a>
+    <a class="wd-link" href="setup.html" aria-current="page">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html">Security</a>
+    <a class="wd-link" href="api.html">API</a>
+    <a class="wd-link" href="demo.html">Demo script</a>
+  </nav>
+</header>
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">workdocs</div>
+    <h1>Setup</h1>
+    <p class="wd-lead">Clone one folder into your agent's skills directory; the pages it writes need nothing at all.</p>
+  </header>
+
+  <!-- workdocs:begin id=prereq -->
+  <section id="prereq">
+    <h2>Prerequisites</h2>
+    <ul>
+      <li><strong>An agent that supports the Agent Skills format</strong> (Claude Code and others): it loads <code>SKILL.md</code> when you say <code>workdocs</code>.</li>
+      <li><strong>For the agent</strong>: a shell to list and search files, and a file editor. Nothing else is required (<code>references/dependencies.md</code>).</li>
+      <li><strong>For the pages</strong>: nothing. No runtime, no framework, no network, no build step.</li>
+      <li><strong>Optional helpers</strong>, used only when installed: a diagram skill (archify or diagram-design) for the architecture diagram, <code>playwright-cli</code> for browser QA, a Remotion skill for the optional video, <code>token-save</code> for reading discipline. The workmap skill is a separate product; see <code>SKILL.md</code>, "Work map".</li>
+    </ul>
+    <p class="wd-source">Source: <code>references/dependencies.md</code>, <code>SKILL.md</code> compatibility line</p>
+  </section>
+  <!-- workdocs:end id=prereq -->
+
+  <!-- workdocs:begin id=install -->
+  <section id="install">
+    <h2>Install</h2>
+<pre><code># for every project on this machine
+git clone git@github.com:nnquangit-skills/workdocs.git ~/.claude/skills/workdocs
+
+# or for one project only
+git clone git@github.com:nnquangit-skills/workdocs.git /path/to/project/.claude/skills/workdocs</code></pre>
+    <p>Any copy of the folder works: the skill is <code>SKILL.md</code>, <code>assets/</code> and <code>references/</code>. A marketplace zip is built with <code>bash scripts/package.sh</code> (one top-level folder, <code>dist/</code>, <code>docs/</code>, <code>demo/</code> and local files left out).</p>
+    <p class="wd-source">Source: <code>README.md</code> "Install", <code>scripts/package.sh</code></p>
+  </section>
+  <!-- workdocs:end id=install -->
+
+  <!-- workdocs:begin id=config -->
+  <section id="config">
+    <h2>Configuration</h2>
+    <p>There is no configuration file and no environment variable. Behaviour is set by what you say and by three conventions in the pages:</p>
+    <div class="wd-table"><table>
+      <thead><tr><th>Where</th><th>Effect</th><th>Default</th></tr></thead>
+      <tbody>
+        <tr><td>Your request</td><td>"workdocs" or "/workdocs" starts a run; "refresh the docs" regenerates only sections whose sources changed; "no promo" leaves the Work map card out</td><td>all six pages, Work map card shown when workmap is absent</td></tr>
+        <tr><td><code>data-workdocs="keep"</code> on a section</td><td>The section is never regenerated</td><td>managed sections are regenerated when their sources change</td></tr>
+        <tr><td><code>docs-theme</code> in the browser's localStorage</td><td>Light or dark for every page in <code>docs/</code>, shared with the workmap page</td><td>follows the system theme</td></tr>
+      </tbody>
+    </table></div>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Writing pages" and "Work map", <code>assets/workdocs.js</code>, <code>assets/page.html</code></p>
+  </section>
+  <!-- workdocs:end id=config -->
+
+  <!-- workdocs:begin id=run -->
+  <section id="run">
+    <h2>Run</h2>
+    <p>In a project, say <code>workdocs</code>. The agent surveys the tree, reads README, manifest, entry points, handlers, auth, config, environment example and test scripts, inventories any existing pages, drafts the six pages with an evidence list, backs up what it will replace, writes the pages and the two asset files, runs the QA checklist and reports. There is no server to start: open <code>docs/index.html</code> in a browser, or serve <code>docs/</code> with any static server (for example <code>python3 -m http.server 4590 --bind 127.0.0.1 --directory docs</code>).</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Run" steps 1-8, <code>references/qa.md</code></p>
+  </section>
+  <!-- workdocs:end id=run -->
+
+  <!-- workdocs:begin id=test -->
+  <section id="test">
+    <h2>Test</h2>
+    <p>The skill ships no automated test. Each run ends with the checklist in <code>references/qa.md</code>: serve <code>docs/</code> alone, open every page with zero console errors and no request for <code>.md</code>, <code>.json</code>, README or another origin, check light and dark, 375 px with no horizontal scroll, identical navigation on all six pages, one <code>h1</code>, animations that run on their own and stop under reduced motion, then the static checks (links resolve, markers paired, no loader leftovers, no key-shaped strings). The report lists what ran and what is unverified.</p>
+    <p class="wd-source">Source: <code>references/qa.md</code></p>
+  </section>
+  <!-- workdocs:end id=test -->
+
+  <!-- workdocs:begin id=verify -->
+  <section id="verify">
+    <h2>Verify</h2>
+    <ol class="wd-steps">
+      <li><code>docs/</code> holds <code>index.html</code>, <code>setup.html</code>, <code>how-it-works.html</code>, <code>security.html</code>, <code>api.html</code>, <code>demo.html</code> and <code>assets/workdocs.css</code>, <code>assets/workdocs.js</code>.</li>
+      <li>Open <code>docs/index.html</code> straight from the file system: the navigation lists the six pages and every section ends with a "Source:" line.</li>
+      <li>The agent's report names created, replaced and untouched pages, the backup folder if any, the evidence gaps, the checks it ran, and the workmap status.</li>
+    </ol>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Run" step 8 and "Done means"</p>
+  </section>
+  <!-- workdocs:end id=verify -->
+
+  <!-- workdocs:begin id=trouble -->
+  <section id="trouble">
+    <h2>Troubleshooting</h2>
+    <div class="wd-table"><table>
+      <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>The agent writes a generic README instead of six pages</td><td>The skill was not loaded</td><td>Say <code>workdocs</code> or <code>/workdocs</code> explicitly; check the folder sits in the agent's skills directory</td></tr>
+        <tr><td>A page shows a loading placeholder or an empty section</td><td>A legacy page that fetched markdown at open time</td><td>Run workdocs again: the migration in <code>references/static.md</code> backs the page up and embeds the content</td></tr>
+        <tr><td>The flow does not move, the step player shows every step lit</td><td>The reader's system has reduced motion on, or the tab is hidden</td><td>Expected: both stop under <code>prefers-reduced-motion</code> and while the tab is hidden</td></tr>
+        <tr><td>The agent reports an assets mismatch</td><td><code>docs/assets/workdocs.css</code> or <code>.js</code> differs from the skill's copy</td><td>Your files are kept; replace them with the skill's copies if you want the current look</td></tr>
+        <tr><td>The Work map card shows the wrong state</td><td>workmap's <code>SKILL.md</code> is not readable, or <code>docs/workmap.html</code> is missing</td><td>See <code>SKILL.md</code>, "Work map": a link card only when both exist; otherwise the pointer card</td></tr>
+      </tbody>
+    </table></div>
+    <p class="wd-source">Source: <code>SKILL.md</code>, <code>references/static.md</code>, <code>assets/workdocs.js</code></p>
+  </section>
+  <!-- workdocs:end id=trouble -->
+
+
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: README.md, SKILL.md, references/dependencies.md, references/qa.md, scripts/package.sh</footer>
+</main>
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>

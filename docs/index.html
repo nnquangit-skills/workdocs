@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Overview · workdocs</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">workdocs docs</a>
+    <a class="wd-link" href="index.html" aria-current="page">Overview</a>
+    <a class="wd-link" href="setup.html">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html">Security</a>
+    <a class="wd-link" href="api.html">API</a>
+    <a class="wd-link" href="demo.html">Demo script</a>
+  </nav>
+</header>
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">workdocs</div>
+    <h1>Overview</h1>
+    <p class="wd-lead">A skill that makes your agent write six documentation pages from the code, with every claim traced to a file and nothing fetched at read time.</p>
+  </header>
+
+  <!-- workdocs:begin id=what -->
+  <section id="what">
+    <h2>What it is</h2>
+    <p>workdocs is an Agent Skill, a folder with a <code>SKILL.md</code> that an agent such as Claude Code loads when you say <code>workdocs</code>. It makes the agent write six reader-facing pages about your project from the project's own files: Overview, Setup, How it works, Security, API and Demo script. Every claim on those pages comes from a file the agent read, each section names those files, and anything mocked, simulated or planned is labelled as such.</p>
+    <p>The pages are plain static HTML in <code>docs/</code>. They open from a folder, fetch nothing, and stay readable with JavaScript off. You can keep them in the repository and hand them to anyone.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> (frontmatter, "Hard rules"), <code>references/static.md</code></p>
+  </section>
+  <!-- workdocs:end id=what -->
+
+  <!-- workdocs:begin id=status -->
+  <section id="status">
+    <h2>Status</h2>
+    <div class="wd-table"><table>
+      <thead><tr><th>Area</th><th>State</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Six pages with managed sections, backups and migration</td><td><span class="wd-tag real">real</span></td><td><code>SKILL.md</code> "Run" and "Writing pages", <code>references/static.md</code>, <code>assets/page.html</code></td></tr>
+        <tr><td>Animated flow and step player, self-running, no controls</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> (<code>startFlows</code>, <code>startStepPlayers</code>), <code>assets/snippets.html</code></td></tr>
+        <tr><td>Light / dark toggle shared with the workmap page</td><td><span class="wd-tag real">real</span></td><td><code>assets/workdocs.js</code> key <code>docs-theme</code>; one-line script in <code>assets/page.html</code></td></tr>
+        <tr><td>Architecture diagrams through a diagram skill</td><td><span class="wd-tag partial">optional</span></td><td><code>references/dependencies.md</code>: archify or diagram-design when installed, otherwise inline SVG</td></tr>
+        <tr><td>Video on How it works</td><td><span class="wd-tag partial">optional</span></td><td><code>SKILL.md</code> "Writing pages": only with a Remotion skill and on request</td></tr>
+        <tr><td>Automated test suite for the skill</td><td><span class="wd-tag none">none</span></td><td>no test script in the repository; quality comes from the QA checklist the agent runs per project (<code>references/qa.md</code>)</td></tr>
+      </tbody>
+    </table></div>
+    <p class="wd-note">The rules in <code>SKILL.md</code> are instructions to the agent, not code that enforces them. An agent that ignores them can still write a page. The checklist in <code>references/qa.md</code> is how you tell: the report has to say which checks ran.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code>, <code>references/qa.md</code>, <code>references/dependencies.md</code>, repository tree</p>
+  </section>
+  <!-- workdocs:end id=status -->
+
+  <!-- workdocs:begin id=arch -->
+  <section id="arch">
+    <h2>Architecture</h2>
+    <figure>
+      <svg class="wd-diagram" viewBox="0 0 900 230" role="img" aria-label="The agent loads SKILL.md and its references, reads the project's files, copies the assets and writes six pages into docs/, which the reader opens in a browser.">
+        <path class="edge" d="M190 60 H330"/><path class="edge" d="M190 130 H330"/>
+        <path class="edge" d="M530 95 H610"/><path class="edge" d="M330 130 H270 V180 H330"/>
+        <path class="edge" d="M740 117 V150"/>
+        <rect class="box" x="30" y="30" width="160" height="56" rx="12"/><text x="110" y="52" text-anchor="middle">SKILL.md + references/</text><text class="muted" x="110" y="72" text-anchor="middle">rules, page standard, QA list</text>
+        <rect class="box" x="30" y="100" width="160" height="56" rx="12"/><text x="110" y="122" text-anchor="middle">Your project</text><text class="muted" x="110" y="142" text-anchor="middle">README, manifest, src, tests</text>
+        <rect class="box" x="330" y="40" width="200" height="110" rx="12"/><text x="430" y="70" text-anchor="middle">Agent</text><text class="muted" x="430" y="92" text-anchor="middle">survey · draft · back up · write</text><text class="muted" x="430" y="112" text-anchor="middle">QA · report</text>
+        <rect class="box" x="330" y="160" width="200" height="50" rx="12"/><text x="430" y="181" text-anchor="middle">assets/</text><text class="muted" x="430" y="199" text-anchor="middle">page.html, css, js, snippets</text>
+        <rect class="box" x="610" y="73" width="260" height="44" rx="12"/><text x="740" y="100" text-anchor="middle">docs/ · six static pages</text>
+        <rect class="box" x="610" y="150" width="260" height="44" rx="12"/><text x="740" y="177" text-anchor="middle">Reader's browser (file:// or any server)</text>
+      </svg>
+      <figcaption>Everything the reader needs ends up inside <code>docs/</code>; the skill itself stays in the agent's skills folder.</figcaption>
+    </figure>
+    <ul>
+      <li><strong>The skill</strong>: <code>SKILL.md</code> (hard rules, the run, the work-map rule) and <code>references/</code> (what each page must contain, what "static" means, optional helpers, the QA checklist). The agent loads these when you say <code>workdocs</code>.</li>
+      <li><strong>The assets</strong>: <code>assets/page.html</code> (page skeleton), <code>workdocs.css</code> (one look, light and dark), <code>workdocs.js</code> (theme toggle, copy buttons, the self-running animations) and <code>snippets.html</code> (the flow, the step player, the Work map card, the video block). Copied into <code>docs/assets/</code> once; never fetched.</li>
+      <li><strong>The output</strong>: six HTML files in <code>docs/</code> with the content embedded, each section between <code>workdocs:begin</code> / <code>workdocs:end</code> markers and a line naming its sources.</li>
+    </ul>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Run", <code>assets/</code>, <code>references/</code></p>
+  </section>
+  <!-- workdocs:end id=arch -->
+
+  <!-- workdocs:begin id=pages -->
+  <section id="pages">
+    <h2>Pages</h2>
+    <div class="wd-cards">
+      <a class="wd-card" href="setup.html"><strong>Setup</strong><p>Install the skill, what the agent needs, how to verify a run.</p></a>
+      <a class="wd-card" href="how-it-works.html"><strong>How it works</strong><p>One run of workdocs, from your request to six pages.</p></a>
+      <a class="wd-card" href="security.html"><strong>Security</strong><p>What the agent reads and writes, and what the rules do not cover.</p></a>
+      <a class="wd-card" href="api.html"><strong>API</strong><p>The trigger, the markers, the data attributes and the CSS tokens.</p></a>
+      <a class="wd-card" href="demo.html"><strong>Demo script</strong><p>A three-minute demo on a small project.</p></a>
+      <div class="wd-card wd-promo" data-workdocs="promo">
+        <strong>Work map</strong>
+        <p>Not used in this repository. workmap adds a live map of Epics → Features → Tasks → Subtasks with status and owner on every node, kept up to date by the agents that do the work; workdocs links it when it is installed in a project.</p>
+        <a class="wd-btn primary" href="https://www.agensi.io/skills/workmap-project-work-map-for-ai-agents" rel="noopener">Get workmap</a>
+        <a href="https://youtu.be/b1yCp2lN2aw" rel="noopener">30-second demo</a>
+      </div>
+    </div>
+  </section>
+  <!-- workdocs:end id=pages -->
+
+  <!-- workdocs:begin id=run -->
+  <section id="run">
+    <h2>Quick start</h2>
+<pre><code>git clone git@github.com:nnquangit-skills/workdocs.git ~/.claude/skills/workdocs
+cd /path/to/your/project
+claude                      # or any agent that supports Agent Skills
+&gt; workdocs                  # the agent reads the project and writes docs/</code></pre>
+    <p>Open <code>docs/index.html</code> when the agent reports. Everything else is on <a href="setup.html">Setup</a>.</p>
+    <p class="wd-source">Source: <code>README.md</code> "Install", <code>SKILL.md</code> description (trigger words)</p>
+  </section>
+  <!-- workdocs:end id=run -->
+
+
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, README.md, CHANGELOG.md, assets/, references/</footer>
+</main>
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>

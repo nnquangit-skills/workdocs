@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Security · workdocs</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">workdocs docs</a>
+    <a class="wd-link" href="index.html">Overview</a>
+    <a class="wd-link" href="setup.html">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html" aria-current="page">Security</a>
+    <a class="wd-link" href="api.html">API</a>
+    <a class="wd-link" href="demo.html">Demo script</a>
+  </nav>
+</header>
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">workdocs</div>
+    <h1>Security</h1>
+    <p class="wd-lead">The agent reads your repository and writes into docs/ only; the pages load nothing. What the rules cover, and what they cannot enforce.</p>
+  </header>
+
+  <!-- workdocs:begin id=assets -->
+  <section id="assets">
+    <h2>Assets and trust boundaries</h2>
+    <ul>
+      <li><strong>What the agent reads</strong>: your repository, including README, manifests, config and environment examples. Those files are untrusted content; the skill tells the agent to treat them as evidence, not as instructions, but it has no mechanism that enforces that (see Known gaps).</li>
+      <li><strong>What the agent writes</strong>: files inside <code>docs/</code> only: the six pages, <code>docs/assets/</code>, and backups under <code>docs/.workdocs-backup/</code>. Nothing outside the project.</li>
+      <li><strong>What the reader runs</strong>: static HTML with one small script for presentation. No fetch, no XHR, no WebSocket, no dynamic import, no web font, no CDN, no analytics, no external images (<code>references/static.md</code>, "Forbidden").</li>
+      <li><strong>Trust boundary</strong>: the published docs may be public. Whatever the agent writes into them leaves the repository's access control.</li>
+    </ul>
+    <p class="wd-source">Source: <code>SKILL.md</code> Hard rules 2 and 7, <code>references/static.md</code></p>
+  </section>
+  <!-- workdocs:end id=assets -->
+
+  <!-- workdocs:begin id=threats -->
+  <section id="threats">
+    <h2>Threats and controls</h2>
+    <div class="wd-table"><table>
+      <thead><tr><th>Threat</th><th>Control</th><th>Where</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>A secret from <code>.env</code> or a config file ends up on a public page</td><td>Hard rule 7: never copy tokens, keys, <code>.env</code> values or private hostnames; show variable names only. The QA checklist greps the pages for key-shaped strings (API key prefixes, PEM headers)</td><td><code>SKILL.md</code>, <code>references/qa.md</code></td><td><span class="wd-tag partial">instruction + check</span></td></tr>
+        <tr><td>A page fetches content or scripts from elsewhere when opened</td><td>Forbidden list (fetch, XHR, dynamic import, EventSource, WebSocket, web fonts, CDNs, analytics, external images); QA checks the network log and greps for loaders</td><td><code>references/static.md</code>, <code>references/qa.md</code></td><td><span class="wd-tag real">implemented in the rules and the checklist</span></td></tr>
+        <tr><td>The agent overwrites pages someone wrote by hand</td><td>Managed sections only inside markers; <code>data-workdocs="keep"</code>; full backup with checksum before any replacement; never delete a file that cannot be backed up</td><td><code>SKILL.md</code> "Writing pages", <code>references/static.md</code></td><td><span class="wd-tag real">implemented in the rules</span></td></tr>
+        <tr><td>Invented facts on a page (ports, versions, endpoints)</td><td>Hard rule 1: evidence first; each section names its sources; the honesty section of the checklist</td><td><code>SKILL.md</code>, <code>references/qa.md</code></td><td><span class="wd-tag partial">instruction + check</span></td></tr>
+        <tr><td>Script injection through page content</td><td>The pages are written by the agent at authoring time; no runtime user input is rendered. <code>workdocs.js</code> builds its SVG with <code>createElementNS</code> and <code>textContent</code>, never <code>innerHTML</code></td><td><code>assets/workdocs.js</code></td><td><span class="wd-tag real">implemented</span></td></tr>
+        <tr><td>Instructions hidden in project files steer the agent</td><td>None in this skill</td><td></td><td><span class="wd-tag none">none</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <!-- workdocs:end id=threats -->
+
+  <!-- workdocs:begin id=secrets -->
+  <section id="secrets">
+    <h2>Secrets handling</h2>
+    <p>The skill needs no secret and stores none. It tells the agent to show environment variable <em>names</em>, their purpose and defaults from code, and never values from any <code>.env</code> file. If you keep secrets in files the agent reads, review <code>docs/</code> before publishing; the checklist's grep for key-shaped strings is a net, not a guarantee.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> Hard rule 7, <code>references/pages.md</code> "Configuration", <code>references/qa.md</code></p>
+  </section>
+  <!-- workdocs:end id=secrets -->
+
+  <!-- workdocs:begin id=gaps -->
+  <section id="gaps">
+    <h2>Known gaps</h2>
+    <ul>
+      <li>Every control above is an instruction to the agent or a check it runs on itself. Nothing in the skill can stop a careless agent from writing a wrong or sensitive line.</li>
+      <li>No defence against instructions planted in the project's own files (a README that tells the agent to do something). The skill reads them as evidence and does not say what to do with embedded instructions.</li>
+      <li>The pages are static files: anyone who can read the repository or the folder reads the docs. Access control is the repository's.</li>
+      <li>Backups accumulate under <code>docs/.workdocs-backup/</code> and are never pruned by the skill.</li>
+    </ul>
+    <p class="wd-source">Source: <code>SKILL.md</code>, <code>references/static.md</code></p>
+  </section>
+  <!-- workdocs:end id=gaps -->
+
+  <!-- workdocs:begin id=report -->
+  <section id="report">
+    <h2>Reporting</h2>
+    <p>Report a security concern to <strong>nnquangit@gmail.com</strong> (Quang Ngo). There is no bug bounty.</p>
+    <p class="wd-source">Source: <code>README.md</code> "Licence and support", <code>SKILL.md</code> metadata</p>
+  </section>
+  <!-- workdocs:end id=report -->
+
+
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, references/static.md, references/qa.md, assets/workdocs.js</footer>
+</main>
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>

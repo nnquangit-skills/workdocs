@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Demo script · workdocs</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">workdocs docs</a>
+    <a class="wd-link" href="index.html">Overview</a>
+    <a class="wd-link" href="setup.html">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html">Security</a>
+    <a class="wd-link" href="api.html">API</a>
+    <a class="wd-link" href="demo.html" aria-current="page">Demo script</a>
+  </nav>
+</header>
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">workdocs</div>
+    <h1>Demo script</h1>
+    <p class="wd-lead">A three-minute demo: one word, six pages, every claim traced, then a hand edit that survives the next run.</p>
+  </header>
+
+  <!-- workdocs:begin id=goal -->
+  <section id="goal">
+    <h2>Goal and audience</h2>
+    <p>Show, in about three minutes, that one word in the chat gives a project six documentation pages whose every claim points at a file, and that the pages are plain files anyone can open. Audience: developers who run coding agents and leads who are tired of stale docs. Everything in the demo runs for real on a local project.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> intro, <code>README.md</code></p>
+  </section>
+  <!-- workdocs:end id=goal -->
+
+  <!-- workdocs:begin id=prereq -->
+  <section id="prereq">
+    <h2>Prerequisites</h2>
+    <ul>
+      <li>Claude Code (or another agent that supports Agent Skills) with workdocs installed in <code>~/.claude/skills/workdocs</code>.</li>
+      <li>A small project with a README, a manifest and a few source files; a copy you do not mind writing into. Not a client repository.</li>
+      <li>A terminal and a browser side by side, about 1400 px wide; no private tabs, no keys on screen.</li>
+      <li>No accounts and no network needed beyond the agent itself.</li>
+    </ul>
+    <p class="wd-source">Source: <code>README.md</code> "Install", <code>SKILL.md</code> compatibility line</p>
+  </section>
+  <!-- workdocs:end id=prereq -->
+
+  <!-- workdocs:begin id=setup -->
+  <section id="setup">
+    <h2>Setup commands</h2>
+<pre><code>git clone git@github.com:nnquangit-skills/workdocs.git ~/.claude/skills/workdocs   # once
+cp -R /path/to/small-project /tmp/docs-demo &amp;&amp; cd /tmp/docs-demo
+rm -rf docs &amp;&amp; ls                       # start without a docs folder
+claude</code></pre>
+    <p>Ready when the agent prompt is up and <code>ls</code> shows no <code>docs/</code>.</p>
+    <p class="wd-source">Source: <code>README.md</code> "Install"</p>
+  </section>
+  <!-- workdocs:end id=setup -->
+
+  <!-- workdocs:begin id=script -->
+  <section id="script">
+    <h2>Script</h2>
+    <p>Lanes: what the presenter says, what is typed in the chat or terminal, what the audience sees in the browser. The diagram walks through the steps below on its own.</p>
+    <ol class="wd-steps" data-player data-lanes="say=Presenter|narration;chat=Chat / terminal|/tmp/docs-demo;web=Browser|docs/">
+      <li data-from="say" data-to="chat" data-label="the problem"><b>Open</b> — say: "Docs go stale because someone has to write them after the work. Let's give that job to the agent, with one rule: no claim without a file." Show the project tree without <code>docs/</code>.</li>
+      <li data-from="say" data-to="chat" data-label="workdocs"><b>Trigger</b> — type <code>workdocs</code>. Say: "One word. The skill tells the agent what to read and what each page must contain."</li>
+      <li data-from="chat" data-to="chat" data-label="reads README, manifest, src, tests"><b>Watch it read</b> — point at the files the agent opens: README, the manifest, entry points, tests. Say: "Nothing from memory. If it did not read it, it cannot write it."</li>
+      <li data-from="chat" data-to="web" data-label="writes docs/*.html"><b>Watch it write</b> — six files appear in <code>docs/</code> plus <code>assets/</code>. Expected: the agent's report lists created pages, evidence gaps, checks run and the workmap status.</li>
+      <li data-from="chat" data-to="web" data-label="open docs/index.html"><b>Open the Overview</b> — open <code>docs/index.html</code> from the file system. Expected: navigation with six entries, the Status table with real / mock tags, every section ending in a "Source:" line.</li>
+      <li data-from="web" data-to="web" data-label="How it works"><b>How it works</b> — click the nav entry. Expected: the flow is moving; scroll to Step by step and the sequence diagram walks the steps by itself. Say: "Nothing to click. It is documentation, you read it."</li>
+      <li data-from="web" data-to="web" data-label="toggle theme, view source"><b>Plain files</b> — toggle dark with the ◐ button, then view the page source. Expected: the content is in the HTML, between <code>workdocs:begin</code> and <code>workdocs:end</code> markers; no fetch anywhere.</li>
+      <li data-from="say" data-to="chat" data-label="edit by hand, run again"><b>Keep your edits</b> — add <code>data-workdocs="keep"</code> to one section, change its text, then say "refresh the docs". Expected: that section is untouched, the rest regenerated, the old files backed up under <code>docs/.workdocs-backup/</code>.</li>
+      <li data-from="say" data-to="web" data-kind="ret" data-label="close"><b>Close</b> — say: "Six pages, every claim traced, nothing fetched, and it pairs with workmap when you want the map of what the project is doing." Show the Work map card on the Overview.</li>
+    </ol>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Run", "Writing pages", "Work map"; <code>assets/workdocs.js</code></p>
+  </section>
+  <!-- workdocs:end id=script -->
+
+  <!-- workdocs:begin id=claims -->
+  <section id="claims">
+    <h2>Genuine vs simulated</h2>
+    <div class="wd-table"><table>
+      <thead><tr><th>Claim in the narration</th><th>Kind</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>"no claim without a file"</td><td><span class="wd-tag real">genuine</span></td><td>Hard rule 1 and the "Source:" line per section (<code>SKILL.md</code>, <code>assets/page.html</code>)</td></tr>
+        <tr><td>"one word"</td><td><span class="wd-tag real">genuine</span></td><td>trigger words in the <code>SKILL.md</code> description</td></tr>
+        <tr><td>"nothing to click"</td><td><span class="wd-tag real">genuine</span></td><td><code>workdocs.js</code> adds no controls; <code>SKILL.md</code> "Writing pages"</td></tr>
+        <tr><td>"no fetch anywhere"</td><td><span class="wd-tag real">genuine</span></td><td><code>references/static.md</code> forbidden list; QA network check</td></tr>
+        <tr><td>"that section is untouched"</td><td><span class="wd-tag real">genuine</span></td><td><code>data-workdocs="keep"</code> rule in <code>SKILL.md</code></td></tr>
+        <tr><td>"it pairs with workmap"</td><td><span class="wd-tag partial">genuine, but a separate product</span></td><td><code>SKILL.md</code> "Work map": linked when installed, never bundled</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <!-- workdocs:end id=claims -->
+
+  <!-- workdocs:begin id=fallback -->
+  <section id="fallback">
+    <h2>Fallbacks</h2>
+    <ul>
+      <li><strong>The agent does not load the skill</strong>: type <code>/workdocs</code>, or check the folder is in <code>~/.claude/skills/</code>.</li>
+      <li><strong>The run takes longer than the slot</strong>: keep a finished <code>docs/</code> from a rehearsal in a sibling folder and open that; say so.</li>
+      <li><strong>The flow does not move</strong>: the machine has reduced motion on; the pages are meant to stop then. Show the step list instead.</li>
+      <li><strong>No browser</strong>: show <code>docs/index.html</code> in the terminal with <code>sed -n '1,60p'</code>: markers and sources are visible in the source.</li>
+      <li><strong>Running out of time</strong>: skip steps 7 and 8.</li>
+    </ul>
+  </section>
+  <!-- workdocs:end id=fallback -->
+
+  <!-- workdocs:begin id=cleanup -->
+  <section id="cleanup">
+    <h2>Cleanup</h2>
+<pre><code>rm -rf /tmp/docs-demo</code></pre>
+    <p>No process was started; close the browser tab that shows <code>file:///tmp/docs-demo/docs/</code>.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> "Run" step 5 (writes only into docs/)</p>
+  </section>
+  <!-- workdocs:end id=cleanup -->
+
+
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, README.md, assets/workdocs.js, references/static.md</footer>
+</main>
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>

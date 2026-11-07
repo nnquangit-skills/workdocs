@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>API · workdocs</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">workdocs docs</a>
+    <a class="wd-link" href="index.html">Overview</a>
+    <a class="wd-link" href="setup.html">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html">Security</a>
+    <a class="wd-link" href="api.html" aria-current="page">API</a>
+    <a class="wd-link" href="demo.html">Demo script</a>
+  </nav>
+</header>
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">workdocs</div>
+    <h1>API</h1>
+    <p class="wd-lead">No endpoints and no CLI: a trigger word, and the markers, attributes, classes and tokens the written pages follow.</p>
+  </header>
+
+  <!-- workdocs:begin id=kind -->
+  <section id="kind">
+    <h2>Interface type</h2>
+    <p>workdocs has no HTTP API, no library and no command-line tool. Its public surface is a <strong>trigger</strong> (what you say to the agent) and a set of <strong>conventions in the pages it writes</strong> (markers, data attributes, CSS classes and tokens, one localStorage key) that you can rely on when you edit the pages or style them.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> description and "Writing pages", <code>assets/</code></p>
+  </section>
+  <!-- workdocs:end id=kind -->
+
+  <!-- workdocs:begin id=endpoints -->
+  <section id="endpoints">
+    <h2>Triggers and conventions</h2>
+    <div class="wd-table"><table>
+      <thead><tr><th>Element</th><th>Purpose</th><th>Values</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td><code>workdocs</code>, <code>/workdocs</code>, "write / refresh the documentation"</td><td>Starts a run</td><td>natural language in the chat</td><td><code>SKILL.md</code> description</td></tr>
+        <tr><td><code>&lt;!-- workdocs:begin id=x --&gt;</code> … <code>&lt;!-- workdocs:end id=x --&gt;</code></td><td>Marks a managed section; only these are regenerated</td><td>section ids from <code>references/pages.md</code> (<code>what</code>, <code>status</code>, <code>arch</code>, <code>pages</code>, <code>run</code>, <code>prereq</code>, …)</td><td><code>SKILL.md</code> "Writing pages"</td></tr>
+        <tr><td><code>data-workdocs="keep"</code></td><td>A section the agent never touches</td><td>on any <code>&lt;section&gt;</code></td><td><code>SKILL.md</code> "Writing pages"</td></tr>
+        <tr><td><code>data-workdocs="promo"</code></td><td>The Work map pointer card, easy to find and remove</td><td>on the card in the Pages section</td><td><code>SKILL.md</code> "Work map", <code>assets/snippets.html</code></td></tr>
+        <tr><td><code>section.wd-flow.playing</code> + <code>svg.wd-diagram</code> with <code>.wire</code> / <code>.packet</code></td><td>Animated flow; packets follow wires with <code>animateMotion</code></td><td>wires have ids, packets reference them with <code>mpath</code></td><td><code>assets/snippets.html</code>, <code>assets/workdocs.js:startFlows</code></td></tr>
+        <tr><td><code>ol.wd-steps[data-player]</code></td><td>Step player; the diagram is drawn above the list</td><td><code>data-lanes="id=Label|subtitle;…"</code>, per item <code>data-from</code>, <code>data-to</code>, <code>data-label</code>, <code>data-kind="ret"</code></td><td><code>assets/snippets.html</code>, <code>assets/workdocs.js:startStepPlayers</code></td></tr>
+        <tr><td><code>.wd-tag</code> with <code>real</code>, <code>mock</code>, <code>partial</code>, <code>none</code></td><td>Status tags in tables</td><td>class names</td><td><code>assets/workdocs.css</code></td></tr>
+        <tr><td><code>.wd-note</code>, <code>.wd-source</code>, <code>.wd-cards</code> / <code>.wd-card</code>, <code>.wd-table</code>, <code>.wd-diagram</code></td><td>Note box, source line, card grid, scrolling table, diagram frame</td><td>class names</td><td><code>assets/workdocs.css</code></td></tr>
+        <tr><td><code>--wd-bg</code>, <code>--wd-panel</code>, <code>--wd-fg</code>, <code>--wd-accent</code>, …</td><td>Theme tokens; redefine them to re-brand</td><td>CSS custom properties on <code>:root</code>, dark values under <code>prefers-color-scheme</code> and <code>html[data-theme="dark"]</code></td><td><code>assets/workdocs.css</code></td></tr>
+        <tr><td><code>docs-theme</code></td><td>Stored theme choice, shared with the workmap page</td><td><code>"light"</code> or <code>"dark"</code> in localStorage</td><td><code>assets/workdocs.js</code>, <code>assets/page.html</code></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <!-- workdocs:end id=endpoints -->
+
+  <!-- workdocs:begin id=shapes -->
+  <section id="shapes">
+    <h2>Shapes</h2>
+    <h3>A managed section</h3>
+<pre><code>&lt;!-- workdocs:begin id=run --&gt;
+&lt;section id="run"&gt;
+  &lt;h2&gt;Quick start&lt;/h2&gt;
+  &lt;pre&gt;&lt;code&gt;npm install
+npm run dev&lt;/code&gt;&lt;/pre&gt;
+  &lt;p class="wd-source"&gt;Source: &lt;code&gt;package.json&lt;/code&gt; scripts&lt;/p&gt;
+&lt;/section&gt;
+&lt;!-- workdocs:end id=run --&gt;</code></pre>
+    <h3>A step player</h3>
+<pre><code>&lt;ol class="wd-steps" data-player data-lanes="client=Storefront|browser;api=API|src/server.ts;db=PostgreSQL"&gt;
+  &lt;li data-from="client" data-to="api" data-label="POST /checkout"&gt;&lt;b&gt;Request&lt;/b&gt; — … (&lt;code&gt;src/routes/checkout.ts:post&lt;/code&gt;)&lt;/li&gt;
+  &lt;li data-from="api" data-to="db" data-label="reserve stock"&gt;&lt;b&gt;Reserve stock&lt;/b&gt; — …&lt;/li&gt;
+  &lt;li data-from="api" data-to="client" data-kind="ret" data-label="201"&gt;&lt;b&gt;Response&lt;/b&gt; — …&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+    <p class="wd-source">Both shapes are taken from <code>assets/page.html</code> and <code>assets/snippets.html</code>; the names are the snippet's fictional shop.</p>
+  </section>
+  <!-- workdocs:end id=shapes -->
+
+  <!-- workdocs:begin id=errors -->
+  <section id="errors">
+    <h2>Errors</h2>
+    <p>There is no runtime, so there are no runtime errors. At authoring time the failure modes are reported, not thrown: a claim with no evidence becomes "not stated"; a check that could not run is listed as unverified; a mismatch in <code>docs/assets/</code> is reported and the existing files are kept; a page that does not apply says what is absent.</p>
+    <p class="wd-source">Source: <code>SKILL.md</code> Hard rule 4 and "Run" steps 5, 7, 8</p>
+  </section>
+  <!-- workdocs:end id=errors -->
+
+  <!-- workdocs:begin id=try -->
+  <section id="try">
+    <h2>Try it</h2>
+<pre><code>git clone git@github.com:nnquangit-skills/workdocs.git ~/.claude/skills/workdocs
+cd /path/to/a/small/project
+claude
+&gt; workdocs
+open docs/index.html</code></pre>
+    <p class="wd-source">Source: <code>README.md</code> "Install"</p>
+  </section>
+  <!-- workdocs:end id=try -->
+
+
+  <footer class="wd-foot">Written from the repository on 2026-11-07; sources: SKILL.md, assets/page.html, assets/snippets.html, assets/workdocs.css, assets/workdocs.js</footer>
+</main>
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>
