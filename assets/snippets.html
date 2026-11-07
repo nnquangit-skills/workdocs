@@ -1,0 +1,70 @@
+<!-- workdocs snippets. Copy a block into a page, then replace every name, label and step with what the code really
+     does (check the call sites). Nothing here is content: the names below belong to a fictional shop. -->
+
+<!-- 1. Animated flow (How it works → Big picture). Blocks = real components, wires = real calls. Each wire has an id;
+        each packet follows one wire (animateMotion + mpath). Start with class "playing"; it runs on its own (no
+        controls); workdocs.js pauses it while the tab is hidden and the CSS hides the packets under reduced motion. -->
+<!-- workdocs:begin id=flow -->
+<section id="flow" class="wd-flow playing">
+  <h2>Big picture</h2>
+  <p>The storefront calls the API through the gateway; the API reads PostgreSQL and asks the payment adapter to capture.</p>
+  <svg class="wd-diagram" viewBox="0 0 900 190" role="img" aria-label="Storefront to Gateway to API; the API talks to PostgreSQL and to the payment adapter.">
+    <path id="w1" class="wire" d="M160 95 H270"/><path id="w2" class="wire" d="M410 95 H520"/>
+    <path id="w3" class="wire" d="M660 95 H720 V55 H760"/><path id="w4" class="wire" d="M660 95 H720 V135 H760"/>
+    <rect class="box" x="30" y="65" width="130" height="60" rx="12"/><text x="95" y="100" text-anchor="middle">Storefront</text>
+    <rect class="box" x="270" y="65" width="140" height="60" rx="12"/><text x="340" y="100" text-anchor="middle">Gateway</text>
+    <rect class="box" x="520" y="65" width="140" height="60" rx="12"/><text x="590" y="100" text-anchor="middle">API</text>
+    <rect class="box" x="760" y="30" width="120" height="50" rx="12"/><text x="820" y="60" text-anchor="middle">PostgreSQL</text>
+    <rect class="box sim" x="760" y="110" width="120" height="50" rx="12"/><text x="820" y="140" text-anchor="middle">Payments</text>
+    <text class="muted" x="820" y="178" text-anchor="middle">mock by default</text>
+    <g aria-hidden="true">
+      <circle class="packet" r="5"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#w1"/></animateMotion></circle>
+      <circle class="packet" r="5"><animateMotion dur="1.4s" begin=".5s" repeatCount="indefinite"><mpath href="#w2"/></animateMotion></circle>
+      <circle class="packet" r="5"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite"><mpath href="#w3"/></animateMotion></circle>
+      <circle class="packet" r="5"><animateMotion dur="1.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#w4"/></animateMotion></circle>
+    </g>
+  </svg>
+  <p class="wd-source">Source: <code>src/server.ts</code>, <code>infra/gateway.conf</code></p>
+</section>
+<!-- workdocs:end id=flow -->
+
+<!-- 2. Step player (How it works → Step by step; Demo script → Script). data-lanes: "id=Label|subtitle" entries
+        separated by ";". Each step: data-from / data-to = lane ids, data-kind="ret" for a return, data-label = short
+        arrow text (default: the <b> title). The list is the content; workdocs.js draws the sequence diagram above it
+        and walks the steps on its own, in a loop, from the moment the reader scrolls to it. Nothing to click. -->
+<!-- workdocs:begin id=steps -->
+<section id="steps">
+  <h2>Step by step</h2>
+  <p>One checkout request, in the order the code runs it. The diagram walks through the steps below on its own.</p>
+  <ol class="wd-steps" data-player data-lanes="client=Storefront|browser;api=API|src/server.ts;db=PostgreSQL;pay=Payments|adapter">
+    <li data-from="client" data-to="api" data-label="POST /checkout"><b>Request</b> — the storefront posts the cart (<code>src/routes/checkout.ts:post</code>).</li>
+    <li data-from="api" data-to="api" data-label="validate"><b>Validate</b> — the body is checked against the cart schema (<code>src/schemas/cart.ts:validate</code>); 400 on failure.</li>
+    <li data-from="api" data-to="db" data-label="reserve stock"><b>Reserve stock</b> — one transaction (<code>src/stock.ts:reserve</code>).</li>
+    <li data-from="api" data-to="pay" data-label="capture()"><b>Capture payment</b> — through the adapter (<code>src/payments/index.ts:capture</code>); mock by default.</li>
+    <li data-from="pay" data-to="api" data-kind="ret" data-label="{ ok, id }"><b>Provider answer</b> — the mock adapter returns success at once.</li>
+    <li data-from="api" data-to="client" data-kind="ret" data-label="201 { orderId }"><b>Response</b> — the order id goes back to the storefront (<code>src/routes/checkout.ts:post</code>).</li>
+  </ol>
+  <p class="wd-source">Source: <code>src/routes/checkout.ts</code>, <code>src/payments/index.ts</code></p>
+</section>
+<!-- workdocs:end id=steps -->
+
+<!-- 3. Work map card (Overview → Pages). Use exactly one of the two. -->
+<!-- 3a. workmap INSTALLED (its SKILL.md is readable and docs/workmap.html exists): a plain link card. -->
+<a class="wd-card" href="workmap.html"><strong>Work map</strong><p>Epics → Features → Tasks → Subtasks with status and owner, kept by the agents.</p></a>
+<!-- 3b. workmap NOT installed: one pointer card, on the Overview only, easy to remove. The external links are deliberate. -->
+<div class="wd-card wd-promo" data-workdocs="promo">
+  <strong>Work map</strong>
+  <p>Not installed. workmap adds a live map of Epics → Features → Tasks → Subtasks with status and owner on every node, kept up to date by the agents that do the work.</p>
+  <a class="wd-btn primary" href="https://www.agensi.io/skills/workmap-project-work-map-for-ai-agents" rel="noopener">Get workmap</a>
+  <a href="https://youtu.be/b1yCp2lN2aw" rel="noopener">30-second demo</a>
+</div>
+
+<!-- 4. Nav entry, only when workmap is installed and docs/workmap.html exists; identical on all six pages. -->
+<a class="wd-link" href="workmap.html">Work map</a>
+
+<!-- 5. Optional local video, rendered with a Remotion skill when the user asks for it: controls, no autoplay, a poster,
+        and the written steps stay below it. Files live in docs/media/. -->
+<figure class="wd-video">
+  <video controls preload="metadata" poster="media/how-it-works.jpg" src="media/how-it-works.mp4" width="1920" height="1080">Your browser cannot play this video. The steps below say the same thing.</video>
+  <figcaption>One checkout request in 30 seconds. The same steps are listed below.</figcaption>
+</figure>

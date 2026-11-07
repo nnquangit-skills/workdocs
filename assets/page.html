@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{PAGE_TITLE}} · {{PROJECT_NAME}}</title>
+  <meta name="generator" content="workdocs">
+  <link rel="stylesheet" href="assets/workdocs.css">
+  <script>try{var t=localStorage.getItem("docs-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<header class="wd-nav">
+  <nav class="wd-bar" aria-label="Documentation">
+    <a class="wd-name" href="index.html">{{PROJECT_NAME}} docs</a>
+    <a class="wd-link" href="index.html">Overview</a>
+    <a class="wd-link" href="setup.html">Setup</a>
+    <a class="wd-link" href="how-it-works.html">How it works</a>
+    <a class="wd-link" href="security.html">Security</a>
+    <a class="wd-link" href="api.html">API</a>
+    <a class="wd-link" href="demo.html">Demo script</a>
+    <!-- Optional links, only when allowed: diagram file inside docs/, work map (installed workmap only). -->
+  </nav>
+</header>
+<!-- Put aria-current="page" on the link for this page. -->
+<main>
+  <header class="wd-hero">
+    <div class="wd-eyebrow">{{PROJECT_NAME}}</div>
+    <h1>{{PAGE_TITLE}}</h1>
+    <p class="wd-lead">{{ONE_LINE_SUMMARY}}</p>
+  </header>
+
+  <!-- workdocs:begin id={{SECTION_ID}} -->
+  <section id="{{SECTION_ID}}">
+    <h2>{{SECTION_TITLE}}</h2>
+    <p>{{CONTENT_WRITTEN_FROM_EVIDENCE}}</p>
+    <p class="wd-source">Source: <code>{{FILE_PATH}}</code></p>
+  </section>
+  <!-- workdocs:end id={{SECTION_ID}} -->
+
+  <footer class="wd-foot">Written from {{COMMIT_OR_DATE}}; sources: {{SOURCE_FILES}}</footer>
+</main>
+<!-- Optional, presentation only. The page is complete without it. -->
+<script src="assets/workdocs.js" defer></script>
+</body>
+</html>
